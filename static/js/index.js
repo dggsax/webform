@@ -12,9 +12,10 @@ window.onload = function(){
 	// 	});
 	// }
 	console.log( "Lets do this!" );
-	
-	var addSlider = document.getElementById('addSlider');
 
+	var addSlider = document.getElementById('addSlider');
+	var deleteSlider = document.getElementById('deleteSlider');
+	
 	addSlider.onclick = function(){
 
 		console.log( "Lets do thiiisssss" );
@@ -24,5 +25,5 @@ window.onload = function(){
 	    // document.getElementsByTagName("head")[0].appendChild(script);
 	    // return false;
 
-	}
+	};
 }
