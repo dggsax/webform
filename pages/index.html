@@ -47,35 +47,100 @@
             
             <div class="content">
                 
-                <h3>Sliders</h3>
-                <form class="pure-form pure-form-aligned" id="slider">
-                    <fieldset>
-                        <div class="pure-control-group">
-                            <label for="name">Display Name</label>
-                            <input id="name" type="text" placeholder="Name for the Slider">
-                        </div>
+                <div id="forms">
+                    <!-- forms for sliders -->
+                    <div id="form-sliders">
+                        <h2>Sliders</h2>
+                        <form class="pure-form pure-form-aligned" id="slider">
+                            <fieldset>
+                                <div class="pure-control-group">
+                                    <label for="slideNname">Display Name</label>
+                                    <input id="sliderName" type="text" placeholder="Name for the Slider">
+                                </div>
 
-                        <div class="pure-control-group">
-                            <label for="lowrange">Low Range</label>
-                            <input id="lowrange" type="number" placeholder="any integer">
-                        </div>
+                                <div class="pure-control-group">
+                                    <label for="sliderLowrange">Low Range</label>
+                                    <input id="sliderLowrange" type="number" placeholder="any integer">
+                                </div>
 
-                        <div class="pure-control-group">
-                            <label for="highrange">High Range</label>
-                            <input id="highrange" type="number" placeholder="any integer">
-                        </div>
+                                <div class="pure-control-group">
+                                    <label for="sliderHighrange">High Range</label>
+                                    <input id="sliderHighrange" type="number" placeholder="any integer">
+                                </div>
 
-                        <div class="pure-control-group">
-                            <label for="stepsize">Step Size</label>
-                            <input id="stepsize" type="number" placeholder="any integer">
-                        </div>
+                                <div class="pure-control-group">
+                                    <label for="sliderStepsize">Step Size</label>
+                                    <input id="sliderStepsize" type="number" placeholder="any integer">
+                                </div>
 
+                            </fieldset>
+                        </form>
+                        <!-- submit button for sliders -->
                         <div class="pure-controls">
-                            <button type="submit" class="pure-button pure-button-primary" id="addSlider">Add New Slider</button>
-                            <button type="submit" class="pure-button pure-button-primary" id="deleteSlider">Delete Slider</button>
+                            <button type="submit" class="pure-button pure-button-primary" id="submitSlider">Submit Slider</button>
                         </div>
-                    </fieldset>
-                </form>
+                        <!-- end submit button for sliders -->
+                    </div>
+                    <!-- end forms for sliders -->
+
+                    <!-- begin forms for timeplots -->
+                    <div id="form-timeplots">
+                        <h2>Time Plots</h2>
+                        <form class="pure-form pure-form-aligned" id="timeplot">
+                            <fieldset>
+                                <!-- Timeplot name -->
+                                <div class="pure-control-group">
+                                    <label for="timeplotName">Timeplot Name</label>
+                                    <input id="timeplotName" type="text" placeholder="Name for the Time Plot">
+                                </div>
+                                <!-- Timeplot format -->
+                                <div class="pure-control-group">
+                                    <label for="timeplotFormat">Data Format</label>
+                                    <select name="timeplotFormat" id="timeplotFormat">
+                                        <option>Choose an format option</option>
+                                        <option value="U1">unsigned 1-byte (uint8_t)</option>
+                                        <option value="S1">signed 1-byte (int8_t)</option>
+                                        <option value="S2">signed 2-byte (2 byte integer on 16 bit micros, or a short on 32 bit micros)</option>
+                                        <option value="S4">signed 4-byte (4 byte integer on 32 bit micros...long on 16 bit micros )</option>
+                                        <option value="F4">float 4-byte</option>
+                                    </select>
+                                </div>
+
+                                <!-- Timeplot ylow -->
+                                <div class="pure-control-group">
+                                    <label for="timeplotLowrange">Lower Bound</label>
+                                    <input id="timeplotLowrange" type="number" placeholder="any number">
+                                </div>
+                                <!-- Timeplot yhigh -->
+                                <div class="pure-control-group">
+                                    <label for="timeplotHighrange">Step Size</label>
+                                    <input id="timeplotHighrange" type="number" placeholder="any number">
+                                </div>
+                            <!-- end building form -->
+                            </fieldset>
+                        </form>
+                        <!-- submit button for timeplots -->
+                        <div class="pure-controls">
+                            <button type="submit" class="pure-button pure-button-primary" id="submitTimeplot">Submit Time Plot</button>
+                        </div>
+                        <!-- end submit button for sliders -->
+                    </div>
+                </div>
+                <!-- End forms -->
+
+                <!-- Begin Table for sliders, time plots, etc -->
+                <div id="table">
+                    <table class="pure-table">
+                        <thead>
+                            <tr><th>Student</th><th>Class</th><th>Grade</th></th>
+                        </thead>
+                        <tbody>
+                            <tr><td>Mahesh Parashar</td><td>VI</td><td>A</td></tr>
+                            <tr><td>Rahul Sharma</td><td>VI</td><td>B</td></tr>
+                            <tr><td>Mohan Sood</td><td>VI</td><td>A</td></tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
