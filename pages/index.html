@@ -11,10 +11,12 @@
     <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/pure-min.css" integrity="sha384-" crossorigin="anonymous">
     
     <link rel="stylesheet" href="../static/css/layouts/side-menu.css">
-    <link rel="stylesheet" href="../static/css/buttons.css">
-    
+    <link rel="stylesheet" href="../static/css/sortable.css">
+    <link rel="stylesheet" href="../static/css/jquery-ui.css">
+
+    <script src="../static/js/jquery.js"></script>
+    <script src="../static/js/jquery-ui.js"></script>
     <script src="../static/js/ui.js"></script>
-    <script src="../static/jquery.js"></script> 
     <script src="../static/js/index.js"></script>
     
 </head>
@@ -41,11 +43,12 @@
         </div>
         <!-- Setting up the main -->
         <div id="main">
+            <!-- Header for the page -->
             <div class="header">
                 <h1>Something Generator</h1>
                 <h2>Make your teensy environment!</h2>
             </div>
-            
+            <!-- Content for the page -->
             <div class="content">
                 
                 <div id="forms">
@@ -61,17 +64,17 @@
 
                                 <div class="pure-control-group">
                                     <label for="sliderLowrange">Low Range</label>
-                                    <input id="sliderLowrange" type="number" placeholder="any integer">
+                                    <input id="sliderLowrange" type="number" placeholder="any integer" step="any">
                                 </div>
 
                                 <div class="pure-control-group">
-                                    <label for="sliderHighrange">High Range</label>
-                                    <input id="sliderHighrange" type="number" placeholder="any integer">
+                                    <label for="sliderHighrange">High Range</label> 
+                                    <input id="sliderHighrange" type="number" placeholder="any integer" step="any">
                                 </div>
 
                                 <div class="pure-control-group">
                                     <label for="sliderStepsize">Step Size</label>
-                                    <input id="sliderStepsize" type="number" placeholder="any integer">
+                                    <input id="sliderStepsize" type="number" placeholder="any integer" step="any">
                                 </div>
 
                             </fieldset>
@@ -92,14 +95,17 @@
                                 <!-- Timeplot name -->
                                 <div class="pure-control-group">
                                     <label for="timeplotName">Timeplot Name</label>
-                                    <input id="timeplotName" type="text" placeholder="Name for the Time Plot">
+                                    <input id="timeplotName" type="text" placeholder="Name for the Time Plot" required>
                                 </div>
                                 <!-- Timeplot format -->
+                                <!--
+                                    NOTE:  What's the best way to enforce that people submit numbers in the correct format? For the future
+                                -->
                                 <div class="pure-control-group">
                                     <label for="timeplotFormat">Data Format</label>
-                                    <select name="timeplotFormat" id="timeplotFormat">
-                                        <option>Choose an format option</option>
-                                        <option value="U1">unsigned 1-byte (uint8_t)</option>
+                                    <select name="timeplotFormat" id="timeplotFormat" placeholder="Select a timeplotformat" required>
+                                        <option selected="selected" disabled="disabled">Choose an format option</option>
+                                        <option value="U1" >unsigned 1-byte (uint8_t)</option>
                                         <option value="S1">signed 1-byte (int8_t)</option>
                                         <option value="S2">signed 2-byte (2 byte integer on 16 bit micros, or a short on 32 bit micros)</option>
                                         <option value="S4">signed 4-byte (4 byte integer on 32 bit micros...long on 16 bit micros )</option>
@@ -110,12 +116,12 @@
                                 <!-- Timeplot ylow -->
                                 <div class="pure-control-group">
                                     <label for="timeplotLowrange">Lower Bound</label>
-                                    <input id="timeplotLowrange" type="number" placeholder="any number">
+                                    <input id="timeplotLowrange" type="number" placeholder="any number" required>
                                 </div>
                                 <!-- Timeplot yhigh -->
                                 <div class="pure-control-group">
                                     <label for="timeplotHighrange">Step Size</label>
-                                    <input id="timeplotHighrange" type="number" placeholder="any number">
+                                    <input id="timeplotHighrange" type="number" placeholder="any number" required>
                                 </div>
                             <!-- end building form -->
                             </fieldset>
@@ -130,14 +136,28 @@
                 </div>
                 <!-- End forms -->
                 <br>
-                
-                <!-- Begin Table for sliders, time plots, etc -->
-                <div id="slider-table"></div>
-                <!-- End table div -->
 
                 <!-- Begin Table for sliders, time plots, etc -->
-                <div id="timeplot-table"></div>
+                <div id="slider-table-div"></div>
                 <!-- End table div -->
+                <br>
+                <!-- Begin Table for sliders, time plots, etc -->
+                <div id="timeplot-table-div"></div>
+                <!-- End table div -->
+
+                <!-- for testing -->
+                <table class="table" id="diagnosis_list">
+                    <thead>
+                        <tr><th>Priority</th><th>Name</th><th>Favorite fruit</th><th>Vegetarian?</th><th>&nbsp;</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class='priority'>1</td><td>George Washington</td><td>Apple</td><td>N</td><td><a class='btn btn-delete btn-danger'>Delete</a></td></tr>
+                        <tr><td class='priority'>2</td><td>John Adams</td><td>Pear</td><td>Y</td><td><a class='btn btn-delete btn-danger'>Delete</a></td></tr>
+                        <tr><td class='priority'>3</td><td>Thomas Jefferson</td><td>Banana</td><td>Y</td><td><a class='btn btn-delete btn-danger'>Delete</a></td></tr>
+                        <tr><td class='priority'>4</td><td>Ben Franklin</td><td>Kumquat</td><td>N</td><td><a class='btn btn-delete btn-danger'>Delete</a></td></tr>
+                        <tr><td class='priority'>5</td><td>Alexander Hamilton</td><td>Red grapes</td><td>N</td><td><a class='btn btn-delete btn-danger'>Delete</a></td></tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
