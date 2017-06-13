@@ -10,7 +10,7 @@ window.onload = function(){
 	// Initialize the buttons
 	var submitSliderButton = document.getElementById('submitSlider');
 	var submitTimeplotButton = document.getElementById('submitTimeplot');
-	
+
 
 	// Initialize the tables list as well as other things, like counters...
 	var table = [];
@@ -24,7 +24,7 @@ window.onload = function(){
 		// Debug message
 		console.log("submitted slider");
 	};
-	
+
 	// Do stuff when the submit button for timeplots is clicked
 	submitTimeplotButton.onclick = function() {
 		// Run function to grab info from form to the table
@@ -44,8 +44,8 @@ window.onload = function(){
 		slider.stepsize = document.getElementById('sliderStepsize').value;
 		slider.alternate = '<input type="checkbox" class="pure-checkbox" name="slider-checkbox-'+counter_a+'" id="alt_'+counter_a+'">';
 		slider.period = '<input id="slider_period_'+counter_a+'" type="number" placeholder="any number" step="any" disabled>';
-		
-		// Update the table	
+
+		// Update the table
 		sliderTable(slider, counter_a);
 
 		// Clear the form
@@ -160,7 +160,7 @@ window.onload = function(){
 		tbody += '<td><i class="fa fa-trash" aria-hidden="true"></i></td></tr>'
 		$(updated_table_body).append(tbody);
 		$(table_header).append(updated_table_body);
-	}	
+	}
 }
 
 
@@ -192,7 +192,7 @@ $(document).on("click", "#submitTimeplot, #submitSlider", function(){
 	var fixHelperModified = function(e, tr) {
 	    var $originals = tr.children();
 	    var $helper = tr.clone();
-	    $helper.children().each(function(index) 
+	    $helper.children().each(function(index)
 	    {
 	      $(this).width($originals.eq(index).width())
 	    });
@@ -212,11 +212,11 @@ $(document).on("click", ".pure-checkbox", function(){
 	if ( $(this).is(':checked') ) { 	// If the thing is checked
 	    $(last_child).removeAttr('disabled') // Make it so the user can modify the stuff in the table
 	} else { 	// If the thing is un-checked
-		$(last_child).removeAttr('style'); 
+		$(last_child).removeAttr('style');
 		$(last_child).val('');
 		$(last_child).attr('disabled','');
 	}
-}); 
+});
 
 //##############################################################
 //##                                                          ##
@@ -232,7 +232,7 @@ function CheckTables() {
 
 	var previewButton = document.getElementById('preview');
 	var buildButton = document.getElementById('build');
-	
+
     $( "table" ).each(function( index ) {
 		$(this).find('tbody:empty').parent().hide();
 		$(this).find('tbody:not(:empty)').parent().show();
@@ -243,8 +243,38 @@ function CheckTables() {
     	// var previewButton = document.getElementById('preview');
     	previewButton.style.display = "unset";
     	buildButton.style.display = "unset";
+
+			previewButton.onclick = function(){
+				console.log("preview was clicked")
+
+				//gets the table
+				var sliderTable = document.getElementById('slider-table');
+
+				//gets rows
+				var rowNum = sliderTable.rows.length;
+				//loop through rows
+				for(i = 1; i < rowNum;i++){
+					//get cells
+					var cells = sliderTable.rows[i].cells;
+					//get number of cells
+					var cellNum = cells.length;
+					//iterate through cells, but dont want last 3
+					var msg = "&S~";
+					for(z = 0; z < cellNum-3; z++){
+						msg += cells[z].innerHTML+"~";
+						if(z == 0){
+							msg+= "commname~";
+						}
+					}
+					msg += "&";
+					console.log(msg + " is the result");
+				}
+			};
+
     } else {
     	previewButton.style.display = "none";
     	buildButton.style.display = "none";
     }
+
+
 }
