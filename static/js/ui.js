@@ -1,4 +1,4 @@
-(function (window, document) {
+window.onload = function (window, document) {
 
     var layout   = document.getElementById('layout'),
         menu     = document.getElementById('menu'),
@@ -43,4 +43,4 @@
         }
     };
 
-}(this, this.document));
+};

@@ -246,30 +246,79 @@ function CheckTables() {
 
 			previewButton.onclick = function(){
 				console.log("preview was clicked")
+				var config_message = "&C&";
+				////////////////////////////////////////////////////////////////
+				// THIS SECTION IS USED FOR BUILDING THE SLIDER AND ALT PORTION//
+				////////////////////////////////////////////////////////////////
+				try{
+					//gets the table
+					var sliderTable = document.getElementById('slider-table');
+					//gets rows
+					var rowNum = sliderTable.rows.length;
+					//loop through rows
 
-				//gets the table
-				var sliderTable = document.getElementById('slider-table');
-
-				//gets rows
-				var rowNum = sliderTable.rows.length;
-				//loop through rows
-				for(i = 1; i < rowNum;i++){
-					//get cells
-					var cells = sliderTable.rows[i].cells;
-					//get number of cells
-					var cellNum = cells.length;
-					//iterate through cells, but dont want last 3
-					var msg = "&S~";
-					for(z = 0; z < cellNum-3; z++){
-						msg += cells[z].innerHTML+"~";
-						if(z == 0){
-							msg+= "commname~";
+					for(i = 1; i < rowNum;i++){
+						//get cells
+						var cells = sliderTable.rows[i].cells;
+						//get number of cells
+						var cellNum = cells.length;
+						//iterate through cells, but dont want last 3
+						var msg = "S~";
+						var alt_msg = "A~"
+						for(z = 0; z < cellNum-3; z++){
+							msg += cells[z].innerHTML+"~"; //maybe include what to add when the cell value is blank?
+							if(z == 0){
+								msg+= "commname~"; //need to replace with unique ASCII character
+							}
+						}
+						msg = msg.substring(0,msg.length-1);
+						msg += "&";
+						console.log(msg + " is being added");
+						config_message += msg;
+						//check if they want to alternate
+						var check = document.getElementById("alt_"+i).checked;
+						if(check){
+							alt_msg+=cells[0].innerHTML+"~"; //adding name
+							var period = document.getElementById("slider_period_" + i).value;
+							alt_msg+=period + "&";//addingperiod
+							config_message += alt_msg;
 						}
 					}
-					msg += "&";
-					console.log(msg + " is the result");
+			  }
+				catch(err){
+					console.log("no data on slider");
 				}
-			};
+				///////////////////////////////////////////////////////////
+				// THIS SECTION IS USED FOR BUILDING THE TIMEPLOT PORTION//
+				///////////////////////////////////////////////////////////
+				try{
+					//gets the table
+					var timeplotTable = document.getElementById('timeplot-table');
+
+					//gets rows
+					var rowNum = timeplotTable.rows.length;
+					//loop through rows
+					for(i = 1; i < rowNum;i++){
+					//get cells
+					var cells = timeplotTable.rows[i].cells;
+					//get number of cells
+					var cellNum = cells.length;
+					//iterate through cells adding to msg, but dont want last cell(since it's the delete icon)
+					var msg = "T~";
+					for(z = 0; z < cellNum-1; z++){
+						msg += cells[z].innerHTML+"~"; //maybe include what to add when the cell value is blank?
+					}
+					msg = msg.substring(0,msg.length-1);
+					msg += "&";
+					console.log(msg + " is being added");
+					config_message += msg;
+				  }
+				 }
+				 catch(err){
+					 console.log("timeplot doesnt exist");
+				 }
+				 console.log("Config Message: " + config_message);
+			 };
 
     } else {
     	previewButton.style.display = "none";
