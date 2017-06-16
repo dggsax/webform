@@ -247,9 +247,11 @@ function CheckTables() {
 			previewButton.onclick = function(){
 				console.log("preview was clicked")
 				var config_message = "&C&";
-				////////////////////////////////////////////////////////////////
-				// THIS SECTION IS USED FOR BUILDING THE SLIDER AND ALT PORTION//
-				////////////////////////////////////////////////////////////////
+				////////////////////////////////////////////////////////////////////////
+				//                                                                    //
+				//    THIS SECTION IS USED FOR BUILDING THE SLIDER AND ALT PORTION    //
+				//                                                                    //
+				////////////////////////////////////////////////////////////////////////
 				try{
 					//gets the table
 					var sliderTable = document.getElementById('slider-table');
@@ -288,9 +290,11 @@ function CheckTables() {
 				catch(err){
 					console.log("no data on slider");
 				}
-				///////////////////////////////////////////////////////////
-				// THIS SECTION IS USED FOR BUILDING THE TIMEPLOT PORTION//
-				///////////////////////////////////////////////////////////
+				//////////////////////////////////////////////////////////////////
+				//                                                              //
+				//    THIS SECTION IS USED FOR BUILDING THE TIMEPLOT PORTION    //
+				//                                                              //
+				//////////////////////////////////////////////////////////////////
 				try{
 					//gets the table
 					var timeplotTable = document.getElementById('timeplot-table');
@@ -318,6 +322,7 @@ function CheckTables() {
 					 console.log("timeplot doesnt exist");
 				 }
 				 console.log("Config Message: " + config_message);
+				 window.location.href = "../pages/preview.html";
 			 };
 
     } else {
