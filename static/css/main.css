@@ -1,0 +1,58 @@
+html *
+{
+   font-family: Avenir;
+}
+
+#body {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    flex-basis: auto;
+    flex-direction: column;
+    width: 85%;
+    margin: auto;
+}
+
+.prestaging-container {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    background-color: pink;
+}
+
+.prestaging-item {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    align-self: stretch;
+    flex-shrink: 0;
+    width: 100%;
+}
+
+button * {
+    background-color: red;
+}
+/*#my_num_row {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+    vertical-align: middle;
+    flex: 0;
+}
+
+#headline {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    vertical-align: middle;
+    flex: 0;
+}*/
