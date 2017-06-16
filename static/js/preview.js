@@ -10,9 +10,10 @@ var sliders = new Array();
 function slider_generate(name,min,max,resolution){
     var newb = document.createElement("div"); 
     $(newb).addClass('col-md-3');
-    var slider = document.createElement("input");
-    $(newb).append('<label for="'+name+'">'+name+':</label>');
-    $(newb).append('<input type="range" name="'+name+'" id="'+name+'" value="0" min="'+min+'" max="'+max+'" step='+resolution+' class="paramSlider">');
+    $(newb).attr('id','my_num_row');
+    $(newb).append('<label class="element-label" for="'+name+'">'+name+':</label>');
+    $(newb).append('<span><input type="range" name="'+name+'" id="'+name+'" value="0" min="'+min+'" max="'+max+'" step='+resolution+' class="paramSlider"></span>');
+    $(newb).append('<i class="fa fa-sliders fa-2x" aria-hidden="true" id="' + name + '""></i>')
     sliders.push({'name': name, 'obj':newb});
 }
 
@@ -40,7 +41,7 @@ function build_sliders(alt,csv){
       $(new_row).addClass("row row-centered");
       var new_buffer1 = document.createElement("div");
       $(new_buffer1).addClass("col-md-1");
-      $(new_buffer1).appendTo($(new_row));
+      $(new_row).append(new_buffer1);
       for (var j = 0; j<3; j++){
         if(slider_count < sliders.length){
           $(sliders[slider_count]['obj']).appendTo($(new_row));
@@ -98,13 +99,36 @@ function build_plots(){
         var datapoints = plots[i]['datapoints'];
         plot_handlers[name] = new LWChart(name,"red",[min,max],PLOT_HEIGHT,PLOT_WIDTH,datapoints);
     }
-
 };
-    
-    
+
+/////////////////////
+//                 //
+//    Autopilot    //
+//                 //
+/////////////////////
+
+$(document).on("mouseover", ".fa-sliders", function(){
+    $(this).css("background-color","yellow")
+});
+
+$(document).on("mouseleave", ".fa-sliders", function(){
+    $(this).css("background-color","initial");
+});
+
+$(document).on("click",".fa-sliders",function(){
+    console.log(this.id);
+    // console.log(this.parents());
+    var settings = document.createElement("div");
+    console.log(settings);
+
+});
+
+
+/////////////////////END OF AUTOPILOT/////////////////////
 
 var datapoints = 100
 var isActive;
+
 $(document).on('pageinit', function() {
     isActive = true; //used for turning off plot updates when page not in focus
     window.onfocus = function () { 
@@ -137,6 +161,8 @@ $(document).on('pageinit', function() {
     });
     //Connect/Disconnect to Serial Port
     $('#connect').click(function(){
+        console.log("esta lit");
+        hootenanny();
         if($(this).text() != 'Connected (Click to Disconnect)'){
             socket.emit('serial connect request',{state: ALREADY_BUILT});
             $('#csv').val(0).slider('refresh');
@@ -185,7 +211,8 @@ $(document).on('pageinit', function() {
     //#####################################################
 
     // Insert the stuff here
-    socket.on('startup',function(msg){
+    // socket.on('startup',function(msg){
+    function hootenanny(){
         var alt = false;
         var csv = false;
         //WIPE THE SLATE CLEAN:
@@ -195,7 +222,8 @@ $(document).on('pageinit', function() {
         plots = new Array();
         plot_handlers = new Array();
         //-------
-        msg = msg+''; //convert to string...stupid I know.
+        // msg = msg+''; //convert to string...stupid I know.
+        msg = "&A~DesiredAngV~5&C&S~Direct~O~0~5.0~0.1&S~DesiredAngV~A~-1~1~0.1&T~AngleV~F4~0~2.5&T~BackEMF~F4~0~5&T~MCmd~F4~0~5&H~4&"
         var sets = msg.split("&");
         var duration = 100; //default
         for (var i = 0;  i < sets.length; i++){
@@ -244,7 +272,7 @@ $(document).on('pageinit', function() {
         }); 
         socket.emit('all set from gui');
         ALREADY_BUILT = true;
-    });
+    };
 
     socket.on('setup slider', function(thing){
         $("#"+thing[0]).val(parseFloat(thing[1])).slider("refresh");
@@ -297,6 +325,11 @@ $(document).on('pageinit', function() {
         }
         parent.update();
     });
+    $('.fa-sliders').hover(function() {
+        $(this).css("background-color","yellow");
+        console.log("hover");
+    });
+
 }); 
 
 function LWChart(div_id,color,y_range,height,width,vals){
