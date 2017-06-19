@@ -223,7 +223,8 @@ $(document).on('pageinit', function() {
         plot_handlers = new Array();
         //-------
         // msg = msg+''; //convert to string...stupid I know.
-        msg = "&A~DesiredAngV~5&C&S~Direct~O~0~5.0~0.1&S~DesiredAngV~A~-1~1~0.1&T~AngleV~F4~0~2.5&T~BackEMF~F4~0~5&T~MCmd~F4~0~5&H~4&"
+        msg = "&C&S~Gonzo~commname~0~69~5&A~Gonzo~2&S~Joe~commname~0~69~5&S~Wei~commname~0~100~1&S~Jesus~commname~3~5~1&S~Wow~commname~0~3~4&T~Hehe~U1~1~5&T~Joe~F4~0~100&T~Everything~U1~0~10&T~Help~U1~0~255&T~Wow~S4~2~5&"
+        // msg = "&A~DesiredAngV~5&C&S~Direct~O~0~5.0~0.1&S~DesiredAngV~A~-1~1~0.1&T~AngleV~F4~0~2.5&T~BackEMF~F4~0~5&T~MCmd~F4~0~5&H~4&"
         var sets = msg.split("&");
         var duration = 100; //default
         for (var i = 0;  i < sets.length; i++){

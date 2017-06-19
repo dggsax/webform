@@ -322,7 +322,7 @@ function CheckTables() {
 					 console.log("timeplot doesnt exist");
 				 }
 				 console.log("Config Message: " + config_message);
-				 window.location.href = "../pages/preview.html";
+				//  window.location.href = "../pages/preview.html";
 			 };
 
     } else {
