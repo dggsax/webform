@@ -20,6 +20,7 @@ html *
     align-items: center;
     flex-direction: column;
     justify-content: center;
+    width: 200px;
 }
 
 .prestaging-item {
@@ -31,15 +32,16 @@ html *
     width: 200px;
 }
 
-.param_area-container {
+.timeplot-container {
     display: -ms-flexbox;
     display: -webkit-flex;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    flex-grow: 1;
 }
 
-.param_area-item {
+.timeplot-item {
     display: -ms-flexbox;
     display: -webkit-flex;
     display: flex;
@@ -61,6 +63,9 @@ html *
     display: flex;
     background-color: blue;
 }
+
+.draggable { padding: 0.5em; }
+#draggable { width: 150px; height: 150px; padding: 0.5em; background-color: red;}
 button * {
     background-color: red;
 }

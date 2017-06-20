@@ -5,42 +5,12 @@ var HEADROOM_PRESENT = false;
 var ALREADY_BUILT = false;
 var TOGGLE_PARAM = '';
 
-// Function that generates sliders
-var sliders = new Array();
-function slider_generate(name,min,max,resolution){
-    var newb = document.createElement("div"); 
-    $(newb).addClass('param_area-item');
-    $(newb).attr('id','my_num_row');
-    $(newb).append('<label class="element-label" for="'+name+'">'+name+':</label>');
-    $(newb).append('<input type="range" name="'+name+'" id="'+name+'" value="0" min="'+min+'" max="'+max+'" step='+resolution+' class="paramSlider">');
-    sliders.push({'name': name, 'obj':newb});
-}
-
-
-// Function that builds the sliders
-function build_sliders(alt,csv){
-    var total_rows = Math.ceil(sliders.length/3);
-    var slider_count = 0;
-    for (var i = 0; i < total_rows; i++){
-      var slider_div = document.getElementById("param_area");
-      for (var j = 0; j<3; j++){
-        if(slider_count < sliders.length){
-          $(sliders[slider_count]['obj']).appendTo($(slider_div));
-          slider_count = slider_count+1;
-        }
-      }
-      // var new_buffer2 = document.createElement("div");
-      // $(new_buffer2).addClass("col-md-1");
-      // $(new_buffer2).appendTo($(new_row));
-      // $(new_row).appendTo($("#param_area")).trigger("create");         
-    } 
-};
-
 // Function that generates plots
 var plots = new Array();
 function plot_generate(name,min,max,datapoints){
     var newb = document.createElement("div"); //create div
     $(newb).addClass("sbs"); //make it sbs
+    $(newb).addClass("draggable");
     var newtitle = document.createElement("div"); //make inside div
     $(newtitle).addClass("plot_title").html(name); //make it title
     var newplot = document.createElement("div"); //make another div
@@ -103,15 +73,15 @@ function build_plots(){
 //                 //
 /////////////////////
 
-$(document).on("mouseover", ".fa-sliders", function(){
+$(document).on("mouseover", ".fa-cog", function(){
     $(this).css("background-color","yellow")
 });
 
-$(document).on("mouseleave", ".fa-sliders", function(){
+$(document).on("mouseleave", ".fa-cog", function(){
     $(this).css("background-color","initial");
 });
 
-$(document).on("click",".fa-sliders",function(){
+$(document).on("click",".fa-cog",function(){
     console.log(this.id);
     // console.log(this.parents());
     var settings = document.createElement("div");
@@ -121,22 +91,10 @@ $(document).on("click",".fa-sliders",function(){
 
 /////////////////////END OF AUTOPILOT/////////////////////
 
-/////////////////////
-//                 //
-//    Draggable    //
-//                 //
-/////////////////////
-
-$( function() {
-    $( "#draggable" ).draggable();
-} );
-
-/////////////////////END OF AUTOPILOT/////////////////////
-
 var datapoints = 100
 var isActive;
-
 $(document).on('pageinit', function() {
+    // $.mobile.ignoreContentEnabled=true;
     isActive = true; //used for turning off plot updates when page not in focus
     window.onfocus = function () { 
       console.log("IN FOCUS");
@@ -280,6 +238,9 @@ $(document).on('pageinit', function() {
         }); 
         socket.emit('all set from gui');
         ALREADY_BUILT = true;
+        $( function() {
+            $( ".draggable" ).draggable();
+        } );
     };
 
     socket.on('setup slider', function(thing){
@@ -338,6 +299,13 @@ $(document).on('pageinit', function() {
         console.log("hover");
     });
 
+    // $('#draggable').hover(function() {
+    //     $(this).draggable();
+    // });
+
+    // $('.draggable').hover(function() {
+    //     $(this).draggable();
+    // });
 }); 
 
 function LWChart(div_id,color,y_range,height,width,vals){
