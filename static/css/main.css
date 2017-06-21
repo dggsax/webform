@@ -1,71 +1,76 @@
 html *
 {
    font-family: Avenir;
-}
-
-#body {
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    flex-basis: auto;
-    flex-direction: column;
-    width: 85%;
-    margin: auto;
+   border: 0;
 }
 
 .prestaging-container {
     display: -ms-flexbox;
     display: -webkit-flex;
     display: flex;
-    align-items: center;
     flex-direction: column;
     justify-content: center;
-    width: 200px;
+    align-content: center;
+    margin: auto;
+    width: 50%;
 }
 
-.prestaging-item {
+/*
+******************************
+**                          **
+**    Deals with sliders    **
+**                          **
+******************************
+*/
+
+.slider-container {
     display: -ms-flexbox;
     display: -webkit-flex;
     display: flex;
-    align-self: stretch;
-    flex-shrink: 0;
-    width: 200px;
+    flex-direction: row;
+    display: inline-block;
+    border: 1px dotted grey;
 }
+
+.slider-item {
+    vertical-align: center;
+}
+
+label.slider-item {
+    margin: 0;
+}
+
+#my_num_row > div > div > div {
+    width: 100px;
+}
+
+div.slider-item {
+    margin-top: 0;
+}
+
+/*
+********************************
+**                            **
+**    Deals with timeplots    **
+**                            **
+********************************
+*/
+
 
 .timeplot-container {
     display: -ms-flexbox;
     display: -webkit-flex;
     display: flex;
+    display: inline-block;
     flex-direction: row;
-    flex-wrap: wrap;
-    flex-grow: 1;
 }
 
 .timeplot-item {
     display: -ms-flexbox;
     display: -webkit-flex;
     display: flex;
-    flex-grow: 2;
 }
 
-.plot_area-container {
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.plot_area-item {
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    background-color: blue;
-}
-
-.draggable { padding: 0.5em; }
-#draggable { width: 150px; height: 150px; padding: 0.5em; background-color: red;}
-button * {
-    background-color: red;
+.draggable { 
+    padding: 0.5em; 
 }

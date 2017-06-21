@@ -18,13 +18,15 @@
     <script src="../static/js/d3.min.js"></script> 
     <script src="../static/js/jquery.mobile.min.js"></script>
     <script src="../static/js/slider.js"></script>
+	<script src="../static/js/toggle.js"></script>
+	<script src="../static/js/timeplot.js"></script>
     <script src="../static/js/main.js"></script>
 
     <!-- Page Tab Icon -->
     <link rel="icon" href="../static/favicon-angellist.ico">
 </head>
 <body>
-	<div id="body">
+	<div style="width: 85%;margin:auto;">
 		<!-- Header -->
 		<div>
 			<h1>6.302x Plotting and Control Environment</h1>
@@ -63,20 +65,20 @@
 				<option value=0>OFF</option>
 				<option value=1>ON </option>
 			</select>
+			<div id="lock"></div>
 			<!-- <label for="alternator">Alternate Desired?:</label>
 			<select name="alternator" id="alternator" data-role="slider">
 				<option value=0>OFF</option>
 				<option value=1>ON</option>
 			</select> -->
+
 		</div>
 
-		<div id="param_area" class="param_area-container"></div>
-		<div id="plot_area" class="plot_area-container"></div>
+		<div id="main_area"></div>
 		<br>
 		<div>
-		  <button class="pure-button pure-button-primary" href="/pages/index.html">Back</button>
+		  <button class="pure-button pure-button-primary" href="/webform/pages/index.html">Back</button>
 		</div>
-		<div id="draggable"></div>
 	</div>
 </body>
 </html>

@@ -18,19 +18,17 @@
 var sliders = new Array();
 function slider_generate(name,min,max,resolution){
 	var newb = document.createElement("div"); 
-	$(newb).addClass('param_area-item');
-	$(newb).addClass('draggable');
-	// $(newb).addClass('timeplot-item')
+	$(newb).addClass("slider-container draggable");
 	$(newb).attr('id','my_num_row');
-	$(newb).append('<label class="element-label" for="'+name+'">'+name+':</label>');
+	$(newb).append('<label class="slider-item" style="border:0px solid red" for="'+name+'">'+name+':</label>'); // label as slider item
 	var slider = document.createElement("div"); 
-	$(slider).addClass("ui-slider");
+	$(slider).addClass("ui-slider slider-item"); // slider as slider item
 	$(slider).append('<input type="number" data-type="range" name="'+name // create the name
 		+'" id="'+name // create the id 
 		+'" value="0" min="'+min // define the min
 		+'" max="'+max // define the max
 		+'" step='+resolution // define the resolution (step)
-		+' class="paramSlider">'); // finish specifying everything...
+		+' class="_slider">'); // finish specifying everything...
 	var animated_slider = document.createElement("div");
 	$(animated_slider).attr("role","application");
 	$(animated_slider).addClass("ui-slider-track ui-shadow-inset ui-bar-inherit ui-corner-all");
@@ -49,6 +47,8 @@ function slider_generate(name,min,max,resolution){
 	$(animated_slider).append(slider_dial);
 	$(slider).append(animated_slider);
 	$(newb).append(slider);
+	$(newb).append('<i class="fa fa-cog fa-2x slider-item" aria-hidden="true" id="' + name + '""></i>')
+	// $(container).append(newb);
 	sliders.push({'name': name, 'obj':newb});
 };
 
@@ -57,7 +57,7 @@ function build_sliders(alt,csv){
     var total_rows = Math.ceil(sliders.length/3);
     var slider_count = 0;
     for (var i = 0; i < total_rows; i++){
-      var slider_div = document.getElementById("param_area");
+      var slider_div = document.getElementById("main_area");
       for (var j = 0; j<3; j++){
         if(slider_count < sliders.length){
           $(sliders[slider_count]['obj']).appendTo($(slider_div));
@@ -66,6 +66,7 @@ function build_sliders(alt,csv){
         }
       }
 
-      $(slider_div).appendTo($("#param_area")).trigger("create");         
+      $(slider_div).appendTo($("#main_area")).trigger("create");         
     }
 };
+

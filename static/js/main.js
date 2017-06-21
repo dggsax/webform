@@ -5,68 +5,6 @@ var HEADROOM_PRESENT = false;
 var ALREADY_BUILT = false;
 var TOGGLE_PARAM = '';
 
-// Function that generates plots
-var plots = new Array();
-function plot_generate(name,min,max,datapoints){
-    var newb = document.createElement("div"); //create div
-    $(newb).addClass("sbs"); //make it sbs
-    $(newb).addClass("draggable");
-    var newtitle = document.createElement("div"); //make inside div
-    $(newtitle).addClass("plot_title").html(name); //make it title
-    var newplot = document.createElement("div"); //make another div
-    $(newplot).addClass("chart"); //make it a chart
-    $(newplot).prop('id',name); //call it appropriate name
-    $(newtitle).appendTo($(newb)); //add into sbs div
-    $(newplot).appendTo($(newb)); //add into sbs div
-    plots.push({'name':name,'plot':newb,'min':min, 'max':max, 'datapoints':datapoints});  //add entry to array.
-}
-
-// Function that builds timeplots
-var plot_handlers = new Array();
-function build_plots(){
-    var rows,cols;
-    //figure out how many rows and columns of plots
-    switch (true){
-        case plots.length == 4:
-            rows = 2;
-            cols = 2;
-            break;
-        case plots.length == 3:
-            rows = 1;
-            cols = 3;
-            break;
-        case plots.length>4:
-            rows = Math.ceil(plots.length/3);
-            cols = 3;
-    }
-    var plot_count = 0
-
-    // Start constructing the html
-    for (var i=0; i<rows;i++){
-        // Think of this like building a grid
-        var new_row = document.createElement("div"); // build div
-        $(new_row).addClass("row row-centered"); // define that div as a row
-        var new_col = document.createElement("div"); // create columns div for that row
-        $(new_col).addClass("col-md-12"); // make a column based off of css library
-        $(new_col).appendTo($(new_row)); // attach that column to the row
-        for (var j=0; j<cols; j++){ // for however many columns are necessary for that row
-            if (plot_count < plots.length){ 
-                $(plots[plot_count]['plot']).appendTo($(new_col));
-                plot_count=plot_count+1;
-            }
-        }
-        $(new_row).appendTo($("#plot_area"));   
-    }
-    //angle =new LWChart("Angle","red",[-100, 100],175,PLOT_HEIGHT,PLOT_WIDTH,datapoints);
-    for (var i=0; i<plot_count;i++){
-        var name = plots[i]['name'];
-        var min = plots[i]['min'];
-        var max = plots[i]['max'];
-        var datapoints = plots[i]['datapoints'];
-        plot_handlers[name] = new LWChart(name,"red",[min,max],PLOT_HEIGHT,PLOT_WIDTH,datapoints);
-    }
-};
-
 /////////////////////
 //                 //
 //    Autopilot    //
@@ -88,13 +26,12 @@ $(document).on("click",".fa-cog",function(){
     console.log(settings);
 });
 
-
 /////////////////////END OF AUTOPILOT/////////////////////
 
 var datapoints = 100
 var isActive;
 $(document).on('pageinit', function() {
-    // $.mobile.ignoreContentEnabled=true;
+
     isActive = true; //used for turning off plot updates when page not in focus
     window.onfocus = function () { 
       console.log("IN FOCUS");
@@ -124,6 +61,7 @@ $(document).on('pageinit', function() {
             $('#serialport option[value='+i+']').prop('selected','selected').change();
         });
     });
+
     //Connect/Disconnect to Serial Port
     $('#connect').click(function(){
         console.log("esta lit");
@@ -169,11 +107,11 @@ $(document).on('pageinit', function() {
         socket.emit('baud select', $('#baud option:selected').text());
     });
 
-    //#####################################################
-    //##                                                 ##
-    //##    THIS IS WHERE YOU MAKE THE PREVIEW HAPPEN    ##
-    //##                                                 ##
-    //#####################################################
+    /////////////////////////////////////////////////////
+    //                                                 //
+    //    THIS IS WHERE YOU MAKE THE PREVIEW HAPPEN    //
+    //                                                 //
+    /////////////////////////////////////////////////////
 
     // Insert the stuff here
     // socket.on('startup',function(msg){
@@ -231,17 +169,36 @@ $(document).on('pageinit', function() {
         }
         build_sliders(alt,csv);
         build_plots();
-        $('.paramSlider').change(function(){
-            var message = 'change';
-            console.log(message);
-            socket.emit(message,{id: $(this).attr('id'), val:$(this).val()}); 
-        }); 
+       
         socket.emit('all set from gui');
         ALREADY_BUILT = true;
+
         $( function() {
-            $( ".draggable" ).draggable();
+            $( ".draggable" ).draggable({
+                containment: "#main_area",
+                snap: true
+            })
         } );
     };
+
+    ///////////////////////////
+    //                       //
+    //    Sending Sockets    //
+    //                       //
+    ///////////////////////////
+
+    $('._slider').change(function(){
+        var message = 'change';
+        console.log(message);
+        console.log($(this).attr('id'),$(this).val());
+        socket.emit(message,{id: $(this).attr('id'), val:$(this).val()}); 
+    }); 
+
+    /////////////////////////////
+    //                         //
+    //    Receiving Sockets    //
+    //                         //
+    /////////////////////////////
 
     socket.on('setup slider', function(thing){
         $("#"+thing[0]).val(parseFloat(thing[1])).slider("refresh");
@@ -294,18 +251,8 @@ $(document).on('pageinit', function() {
         }
         parent.update();
     });
-    $('.fa-sliders').hover(function() {
-        $(this).css("background-color","yellow");
-        console.log("hover");
-    });
 
-    // $('#draggable').hover(function() {
-    //     $(this).draggable();
-    // });
-
-    // $('.draggable').hover(function() {
-    //     $(this).draggable();
-    // });
+    $(document).on("click","")
 }); 
 
 function LWChart(div_id,color,y_range,height,width,vals){
