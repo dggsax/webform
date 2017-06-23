@@ -70,7 +70,6 @@ function build_sliders(){
           slider_count = slider_count+1;
         }
       }
-
       $(slider_div).appendTo($("#main_area")).trigger("create");
     }
 };
@@ -78,81 +77,76 @@ function build_sliders(){
 // Function that builds/hides the autopilot for a selected div
 function build_slider_autopilot(div_id){
 	var autopilot = div_id+'_autopilot';
-
 	// Setupsssss
 	var setup = function(){ // Build for that div the first time.
 		// $('#'+div_id+'_autopilot').css("background-color:red;");
 		$('#' + autopilot).append('<div class="autopilot-container" id="'+autopilot+'_holder"></div>');
-<<<<<<< HEAD
-		console.log(autopilot+'_holder');
-		var alternator = Toggle(autopilot+'_holder',"alternate?",["no","yes"],'10'+div_id+'69',null);
-		$('#'+autopilot+'_holder').append(alternator);
-=======
 		var alternator = Toggle(autopilot+'_holder',"alternate?",["no","yes"],'10'+div_id+'69',socket);
 		$('#'+autopilot+'_holder').append(alternator);
-		$('#'+autopilot+'_holder').append('Wave Type:<select name="waves" style="background-color:#f6f6f6;display:table-cell;width:100%;"><option value="Sin">Sin</option><option value="Square">Square</option><option value="Triangle">Triangle</option><option value="Sawtooth">Sawtooth</option></select><br>');
-		$('#'+autopilot+'_holder').append('Frequency (hz):<input alight="right" type="number" data-type="range"' // Attach Frequency Field 
+		$('#'+autopilot+'_holder').append('Wave Type:<select name="waves"'
+			+ 'style="background-color:#f6f6f6;display:table-cell;width:100%;">'
+			+ ' <option value="Sin">Sin</option>'
+			+ ' <option value="Square">Square</option>'
+			+ ' <option value="Triangle">Triangle</option>'
+			+ ' <option value="Sawtooth">Sawtooth</option></select><br>');
+		$('#'+autopilot+'_holder').append('Frequency (hz):<input alight="right" type="number" data-type="range"' // Attach Frequency Field
 			+ 'name="'+div_id+'_frequency' // create the name
-			+'" id="'+div_id+'_frequency' // create the id 
+			+'" id="'+div_id+'_frequency' // create the id
 			+'" value="0"' // define the value
 			+'" class="autopilot_frequency"'
 			+ ' style="background-color:#f6f6f6;display:table-cell;width:100%"><br>');	// define the frequency type
-		$('#'+autopilot+'_holder').append('Amplitude (unit):<input alight="right" type="number" data-type="range"' // Attach Frequency Field 
+		$('#'+autopilot+'_holder').append('Amplitude (unit):<input alight="right" type="number" data-type="range"' // Attach Frequency Field
 			+ 'name="'+div_id+'_amplitude' // create the name
-			+'" id="'+div_id+'_amplitude' // create the id 
+			+'" id="'+div_id+'_amplitude' // create the id
 			+'" value="0" ' // define the value
 			+'" class="autopilot_amplitude"'
 			+ ' style="background-color:#f6f6f6;display:table-cell;width:100%">');	// define the resolution (step)
-		$('#'+autopilot+'_holder').append('Offset (unit):<input alight="right" type="number" data-type="range"' // Attach Frequency Field 
+		$('#'+autopilot+'_holder').append('Offset (unit):<input alight="right" type="number" data-type="range"' // Attach Frequency Field
 			+ 'name="'+div_id+'_offset' // create the name
-			+'" id="'+div_id+'_offset' // create the id 
+			+'" id="'+div_id+'_offset' // create the id
 			+'" value="0" ' // define the value
 			+'" class="autopilot_frequency"' // define the class
 			+ ' style="background-color:#f6f6f6;display:table-cell;width:100%">');	// define the resolution (step)=
-<<<<<<< HEAD
->>>>>>> cbcb4aa2daadbffb124ff107816ad14db37417d1
-=======
-		$('#'+autopilot+'_holder').append('Update Frequency (ms):<input alight="right" type="number" data-type="range"' // Attach Frequency Field 
+		$('#'+autopilot+'_holder').append('Update Frequency (ms):<input alight="right" type="number" data-type="range"' // Attach Frequency Field
 			+ 'name="'+div_id+'_updatefreq' // create the name
-			+'" id="'+div_id+'_updatefreq' // create the id 
+			+'" id="'+div_id+'_updatefreq' // create the id
 			+'" value="0" ' // define the value
 			+'" class="autopilot_frequency"' // define the class
 			+ ' style="background-color:#f6f6f6;display:table-cell;width:100%">');	// define the resolution (step)=
->>>>>>> b78408e27db742944bc19e4164cfd967d7b3cc45
 	}
+	console.log(autopilot);
 
 	// Checks if the autopilot fOR THAT SLIDER has already been built.
 	if ( $('#'+autopilot).is(':empty')) { // Build the first time, then don't touch it....
 		setup();
-<<<<<<< HEAD
 		d3.select("#main_area").select("#"+autopilot)
-    .style("top","120px").style("position","absolute")
-    .style("z-index","999999")
-    .style("background-color",("#f4f4f4"))
-    .append("div").attr("id",autopilot).style("height","0px")
+		.style("top","110px").style("position","absolute")
+		.style("z-index","999999")
+		.style("background-color",("#f4f4f4"));
+
+		d3.select("#" + div_id).append("div").style("height","0px")
 		.style("width","0px")
 		.style("position","relative")
 		.style("bottom","100px")
-		.style("border-width", "100px")
-		.style("border-color", "transparent transparent red transparent")
-		.style("border-style", "solid");
-		console.log("I should be building right now");
-=======
->>>>>>> cbcb4aa2daadbffb124ff107816ad14db37417d1
+		.style("border-width", "10px")
+		.style("border-color", "transparent transparent black transparent")
+		.style("border-style", "solid")
+		.style("bottom","7px")
+		.style("left", "6px")
+		.attr("class","triangle");
+	} else {
+		console.log("for some reason it's not empty");
 	}
 
 	// Deals with making the thingy dissapear/appear
 	if ( $('#'+autopilot).is(':visible') ){
 		$('#'+autopilot).hide();
+		$('.triangle').hide();
 	} else {
 		$('#'+autopilot).show();
-<<<<<<< HEAD
+		$('.triangle').show();
 	}
-}
-=======
-	}	
 };
->>>>>>> cbcb4aa2daadbffb124ff107816ad14db37417d1
 
 //
 //$('#alternator').change(function(){
