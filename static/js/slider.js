@@ -106,6 +106,12 @@ function build_slider_autopilot(div_id){
 			+'" value="0" ' // define the value
 			+'" class="autopilot_frequency"' // define the class
 			+ ' style="background-color:#f6f6f6;display:table-cell;width:100%">');	// define the resolution (step)=
+		$('#'+autopilot+'_holder').append('Update Frequency (ms):<input alight="right" type="number" data-type="range"' // Attach Frequency Field 
+			+ 'name="'+div_id+'_updatefreq' // create the name
+			+'" id="'+div_id+'_updatefreq' // create the id 
+			+'" value="0" ' // define the value
+			+'" class="autopilot_frequency"' // define the class
+			+ ' style="background-color:#f6f6f6;display:table-cell;width:100%">');	// define the resolution (step)=
 	}
 
 	// Checks if the autopilot fOR THAT SLIDER has already been built.
