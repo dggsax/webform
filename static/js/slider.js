@@ -14,12 +14,16 @@
 //                                                                                          //
 //////////////////////////////////////////////////////////////////////////////////////////////
 
+// Define to socket
+
+var socket = io('http://localhost:3000');
+
 // Function that generates sliders and stores them into an array
 var sliders = new Array();
 function slider_generate(name,min,max,resolution){
 	var newb = document.createElement("div");
 	$(newb).addClass("slider-container draggable");
-	$(newb).attr('id','my_num_row');
+	$(newb).attr('id',name);
 	$(newb).append('<label class="slider-item" style="border:0px solid red" for="'+name+'">'+name+':</label>'); // label as slider item
 	var slider = document.createElement("div");
 	$(slider).addClass("ui-slider slider-item"); // slider as slider item
@@ -54,7 +58,7 @@ function slider_generate(name,min,max,resolution){
 };
 
 // Function that builds the sliders
-function build_sliders(alt,csv){
+function build_sliders(){
     var total_rows = Math.ceil(sliders.length/3);
     var slider_count = 0;
     for (var i = 0; i < total_rows; i++){
@@ -74,17 +78,44 @@ function build_sliders(alt,csv){
 // Function that builds/hides the autopilot for a selected div
 function build_slider_autopilot(div_id){
 	var autopilot = div_id+'_autopilot';
+
+	// Setupsssss
 	var setup = function(){ // Build for that div the first time.
 		// $('#'+div_id+'_autopilot').css("background-color:red;");
 		$('#' + autopilot).append('<div class="autopilot-container" id="'+autopilot+'_holder"></div>');
+<<<<<<< HEAD
 		console.log(autopilot+'_holder');
 		var alternator = Toggle(autopilot+'_holder',"alternate?",["no","yes"],'10'+div_id+'69',null);
 		$('#'+autopilot+'_holder').append(alternator);
+=======
+		var alternator = Toggle(autopilot+'_holder',"alternate?",["no","yes"],'10'+div_id+'69',socket);
+		$('#'+autopilot+'_holder').append(alternator);
+		$('#'+autopilot+'_holder').append('Wave Type:<select name="waves" style="background-color:#f6f6f6;display:table-cell;width:100%;"><option value="Sin">Sin</option><option value="Square">Square</option><option value="Triangle">Triangle</option><option value="Sawtooth">Sawtooth</option></select><br>');
+		$('#'+autopilot+'_holder').append('Frequency (hz):<input alight="right" type="number" data-type="range"' // Attach Frequency Field 
+			+ 'name="'+div_id+'_frequency' // create the name
+			+'" id="'+div_id+'_frequency' // create the id 
+			+'" value="0"' // define the value
+			+'" class="autopilot_frequency"'
+			+ ' style="background-color:#f6f6f6;display:table-cell;width:100%"><br>');	// define the frequency type
+		$('#'+autopilot+'_holder').append('Amplitude (unit):<input alight="right" type="number" data-type="range"' // Attach Frequency Field 
+			+ 'name="'+div_id+'_amplitude' // create the name
+			+'" id="'+div_id+'_amplitude' // create the id 
+			+'" value="0" ' // define the value
+			+'" class="autopilot_amplitude"'
+			+ ' style="background-color:#f6f6f6;display:table-cell;width:100%">');	// define the resolution (step)
+		$('#'+autopilot+'_holder').append('Offset (unit):<input alight="right" type="number" data-type="range"' // Attach Frequency Field 
+			+ 'name="'+div_id+'_offset' // create the name
+			+'" id="'+div_id+'_offset' // create the id 
+			+'" value="0" ' // define the value
+			+'" class="autopilot_frequency"' // define the class
+			+ ' style="background-color:#f6f6f6;display:table-cell;width:100%">');	// define the resolution (step)=
+>>>>>>> cbcb4aa2daadbffb124ff107816ad14db37417d1
 	}
 
 	// Checks if the autopilot fOR THAT SLIDER has already been built.
 	if ( $('#'+autopilot).is(':empty')) { // Build the first time, then don't touch it....
 		setup();
+<<<<<<< HEAD
 		d3.select("#main_area").select("#"+autopilot)
     .style("top","120px").style("position","absolute")
     .style("z-index","999999")
@@ -97,6 +128,8 @@ function build_slider_autopilot(div_id){
 		.style("border-color", "transparent transparent red transparent")
 		.style("border-style", "solid");
 		console.log("I should be building right now");
+=======
+>>>>>>> cbcb4aa2daadbffb124ff107816ad14db37417d1
 	}
 
 	// Deals with making the thingy dissapear/appear
@@ -104,8 +137,13 @@ function build_slider_autopilot(div_id){
 		$('#'+autopilot).hide();
 	} else {
 		$('#'+autopilot).show();
+<<<<<<< HEAD
 	}
 }
+=======
+	}	
+};
+>>>>>>> cbcb4aa2daadbffb124ff107816ad14db37417d1
 
 //
 //$('#alternator').change(function(){

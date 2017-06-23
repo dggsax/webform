@@ -25,6 +25,12 @@ $(document).on("click",".fa-cog",function(){
     var settings = document.createElement("div");
     console.log(settings);
     build_slider_autopilot(this.id);
+<<<<<<< HEAD
+=======
+    console.log(this.id);
+    d3.select("#main_area").select("#"+this.id+"_autopilot").style("background-color",("red"));
+    d3.select("#main_area").select("#"+this.id+"_autopilot").style("position","absolute").style("z-index","999999").style("background-color",("#f4f4f4"));
+>>>>>>> cbcb4aa2daadbffb124ff107816ad14db37417d1
   });
 
 /////////////////////END OF AUTOPILOT///////////////////
@@ -101,6 +107,10 @@ $(document).on('pageinit', function() {
     // Build default toggles
     var toggle_lock = new lockToggle("lock","Page Lock",["Locked","Unlocked"],69,socket);
     var toggle_csv = new Toggle("generate_csv","Generate CSV?",["OFF","ON"],420,socket);
+<<<<<<< HEAD
+=======
+
+>>>>>>> cbcb4aa2daadbffb124ff107816ad14db37417d1
     //update serial port upon selection:
     $('#serialport').change(function(){
     console.log("serialport selected");
@@ -170,10 +180,8 @@ $(document).on('pageinit', function() {
                     break;
             }
         }
-        build_sliders(alt,csv);
+        build_sliders();
         build_plots();
-        // $('#lock').css("display:unset;");
-        // $(".draggable").addClass("ui-draggable-disable");
         socket.emit('all set from gui');
         ALREADY_BUILT = true;
 
