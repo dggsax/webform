@@ -79,9 +79,9 @@ function build_slider_autopilot(div_id){
 		var resolution = 1;
 		// $('#'+div_id+'_autopilot').css("background-color:red;");
 		$('#' + autopilot).append('<div class="autopilot-container" id="'+autopilot+'_holder"></div>');
-		// var alternator = Toggle(autopilot+'_holder',"alternate?",["no","yes"],'10'+div_id+'69',null);
-		$('#'+autopilot+'_holder').append(Toggle(autopilot+'_holder',"alternate?",["no","yes"],'10'+div_id+'69',null));
-		$('#'+autopilot+'_holder').append('Wave Type:<select name="waves"><option value="Sin">Sin</option><option value="Square">Square</option><option value="Triangle">Triangle</option><option value="Sawtooth">Sawtooth</option></select><br>');
+		var alternator = Toggle(autopilot+'_holder',"alternate?",["no","yes"],'10'+div_id+'69',null);
+		$('#'+autopilot+'_holder').append(alternator);
+		$('#'+autopilot+'_holder').append('Wave Type:<select name="waves" style="background-color:#f6f6f6;display:table-cell;width:100%;"><option value="Sin">Sin</option><option value="Square">Square</option><option value="Triangle">Triangle</option><option value="Sawtooth">Sawtooth</option></select><br>');
 		$('#'+autopilot+'_holder').append('Frequency (hz):<input alight="right" type="number" data-type="range"' // Attach Frequency Field 
 			+ 'name="'+div_id // create the name
 			+'" id="'+div_id // create the id 
@@ -89,7 +89,7 @@ function build_slider_autopilot(div_id){
 			+'" max="'+max // define the max
 			+'" step='+resolution
 			+'" class="autopilot_frequency"'
-			+ ' style="background-color:#f6f6f6;"><br>');// define the resolution (step)
+			+ ' style="background-color:#f6f6f6;display:table-cell;width:100%"><br>');	// define the resolution (step)
 		$('#'+autopilot+'_holder').append('Amplitude (unit):<input alight="right" type="number" data-type="range"' // Attach Frequency Field 
 			+ 'name="'+div_id // create the name
 			+'" id="'+div_id // create the id 
@@ -97,7 +97,7 @@ function build_slider_autopilot(div_id){
 			+'" max="'+max // define the max
 			+'" step='+resolution
 			+'" class="autopilot_frequency"'
-			+ ' style="background-color:#f6f6f6;">');// define the resolution (step)
+			+ ' style="background-color:#f6f6f6;display:table-cell;width:100%">');	// define the resolution (step)
 	}
 
 	// Checks if the autopilot fOR THAT SLIDER has already been built.
@@ -112,6 +112,10 @@ function build_slider_autopilot(div_id){
 	} else {
 		$('#'+autopilot).show();
 	}
+
+	// Do the console stuff if alternate is "yes"
+	console.log(alternator.val());
+
 };
 
 //

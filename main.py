@@ -31,6 +31,11 @@ from flask_socketio import SocketIO, emit, join_room, leave_room,close_room, roo
 # the best option based on available packages.
 #async_mode = 'threading'
 #async_mode = 'eventlet'
+
+import logging
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
+
 async_mode = None
 if async_mode is None:
     try:

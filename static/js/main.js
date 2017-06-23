@@ -99,6 +99,7 @@ $(document).on('pageinit', function() {
     // Build default toggles
     var toggle_lock = new lockToggle("lock","Page Lock",["Locked","Unlocked"],69,socket);
     var toggle_csv = new Toggle("generate_csv","Generate CSV?",["OFF","ON"],420,socket);
+    
     //update serial port upon selection:
     $('#serialport').change(function(){
     console.log("serialport selected");
