@@ -12,7 +12,7 @@ var TOGGLE_PARAM = '';
 /////////////////////
 
 $(document).on("mouseover", ".fa-cog", function(){
-    $(this).css("background-color","#e9e9e9")
+    $(this).css("background-color","yellow")
 });
 
 $(document).on("mouseleave", ".fa-cog", function(){
@@ -20,13 +20,26 @@ $(document).on("mouseleave", ".fa-cog", function(){
 });
 
 $(document).on("click",".fa-cog",function(){
+    console.log(this.id);
+    // console.log(this.parents());
+    var settings = document.createElement("div");
+    console.log(settings);
     build_slider_autopilot(this.id);
+<<<<<<< HEAD
     // d3.select("#main_area").select("#"+this.id+"_autopilot").style("position","absolute").style("z-index","999999").style("background-color",("#f4f4f4"));
     console.log("fuck");
 });
+=======
+<<<<<<< HEAD
+=======
+    console.log(this.id);
+    d3.select("#main_area").select("#"+this.id+"_autopilot").style("background-color",("red"));
+    d3.select("#main_area").select("#"+this.id+"_autopilot").style("position","absolute").style("z-index","999999").style("background-color",("#f4f4f4"));
+>>>>>>> cbcb4aa2daadbffb124ff107816ad14db37417d1
+  });
+>>>>>>> 228b491cfcd894fa637c05188c0ce092dbb09f67
 
-/////////////////////END OF AUTOPILOT/////////////////////
-
+/////////////////////END OF AUTOPILOT///////////////////
 var datapoints = 100
 var isActive;
 $(document).on('pageinit', function() {
@@ -100,7 +113,10 @@ $(document).on('pageinit', function() {
     // Build default toggles
     var toggle_lock = new lockToggle("lock","Page Lock",["Locked","Unlocked"],69,socket);
     var toggle_csv = new Toggle("generate_csv","Generate CSV?",["OFF","ON"],420,socket);
+<<<<<<< HEAD
+=======
 
+>>>>>>> cbcb4aa2daadbffb124ff107816ad14db37417d1
     //update serial port upon selection:
     $('#serialport').change(function(){
     console.log("serialport selected");
