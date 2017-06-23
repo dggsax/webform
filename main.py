@@ -98,9 +98,8 @@ def index():
 def action(content):
     unique = content['unique']
     data = content['data']
-    socketio.emit("{} changed to {}!".format(unique,data))
+    # socketio.emit("{} changed to {}!".format(unique,data))
     print("{} changed to {}!".format(unique,data))
 
 if __name__ == '__main__':
     socketio.run(app, port=3000, debug=True)
-
