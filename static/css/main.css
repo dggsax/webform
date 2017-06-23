@@ -20,7 +20,7 @@ html *
     margin: auto;
 }
 
-.toggle_holder > divr {
+.toggle_holder > div {
     display: inline-block;
     background-color: red;
 }
