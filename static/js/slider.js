@@ -66,7 +66,6 @@ function build_sliders(alt,csv){
           slider_count = slider_count+1;
         }
       }
-
       $(slider_div).appendTo($("#main_area")).trigger("create");         
     }
 };
@@ -75,11 +74,30 @@ function build_sliders(alt,csv){
 function build_slider_autopilot(div_id){
 	var autopilot = div_id+'_autopilot';
 	var setup = function(){ // Build for that div the first time.
+		var min = 0;
+		var max = 69;
+		var resolution = 1;
 		// $('#'+div_id+'_autopilot').css("background-color:red;");
 		$('#' + autopilot).append('<div class="autopilot-container" id="'+autopilot+'_holder"></div>');
-		console.log(autopilot+'_holder');
-		var alternator = Toggle(autopilot+'_holder',"alternate?",["no","yes"],'10'+div_id+'69',null);
-		$('#'+autopilot+'_holder').append(alternator);
+		// var alternator = Toggle(autopilot+'_holder',"alternate?",["no","yes"],'10'+div_id+'69',null);
+		$('#'+autopilot+'_holder').append(Toggle(autopilot+'_holder',"alternate?",["no","yes"],'10'+div_id+'69',null));
+		$('#'+autopilot+'_holder').append('Wave Type:<select name="waves"><option value="Sin">Sin</option><option value="Square">Square</option><option value="Triangle">Triangle</option><option value="Sawtooth">Sawtooth</option></select><br>');
+		$('#'+autopilot+'_holder').append('Frequency (hz):<input alight="right" type="number" data-type="range"' // Attach Frequency Field 
+			+ 'name="'+div_id // create the name
+			+'" id="'+div_id // create the id 
+			+'" value="0" min="'+min // define the min
+			+'" max="'+max // define the max
+			+'" step='+resolution
+			+'" class="autopilot_frequency"'
+			+ ' style="background-color:#f6f6f6;"><br>');// define the resolution (step)
+		$('#'+autopilot+'_holder').append('Amplitude (unit):<input alight="right" type="number" data-type="range"' // Attach Frequency Field 
+			+ 'name="'+div_id // create the name
+			+'" id="'+div_id // create the id 
+			+'" value="0" min="'+min // define the min
+			+'" max="'+max // define the max
+			+'" step='+resolution
+			+'" class="autopilot_frequency"'
+			+ ' style="background-color:#f6f6f6;">');// define the resolution (step)
 	}
 
 	// Checks if the autopilot fOR THAT SLIDER has already been built.
@@ -94,7 +112,7 @@ function build_slider_autopilot(div_id){
 	} else {
 		$('#'+autopilot).show();
 	}
-}
+};
 
 //
 //$('#alternator').change(function(){

@@ -12,7 +12,7 @@ var TOGGLE_PARAM = '';
 /////////////////////
 
 $(document).on("mouseover", ".fa-cog", function(){
-    $(this).css("background-color","yellow")
+    $(this).css("background-color","#e9e9e9")
 });
 
 $(document).on("mouseleave", ".fa-cog", function(){
@@ -20,10 +20,6 @@ $(document).on("mouseleave", ".fa-cog", function(){
 });
 
 $(document).on("click",".fa-cog",function(){
-    console.log(this.id);
-    // console.log(this.parents());
-    var settings = document.createElement("div");
-    console.log(settings);
     build_slider_autopilot(this.id);
 });
 
