@@ -73,15 +73,16 @@ thread = None
 
 
 def dataThread():
-    unique = 123
-    count = 0
-    while True:
-        time.sleep(0.02)
-        count +=1
-        if count == 400:
-            socketio.emit('update_{}'.format(unique),'Blue')
-            print('sending')
-            count = 0
+    pass
+    # unique = 123
+    # count = 0
+    # while True:
+    #     time.sleep(0.02)
+    #     count +=1
+    #     if count == 400:
+    #         socketio.emit('update_{}'.format(unique),'Blue')
+    #         print('sending')
+    #         count = 0
 
 @app.route('/')
 def index():
@@ -97,6 +98,7 @@ def index():
 def action(content):
     unique = content['unique']
     data = content['data']
+    socketio.emit("{} changed to {}!".format(unique,data))
     print("{} changed to {}!".format(unique,data))
 
 if __name__ == '__main__':

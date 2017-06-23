@@ -14,6 +14,10 @@
 //                                                                                          //
 //////////////////////////////////////////////////////////////////////////////////////////////
 
+// Define to socket
+
+var socket = io('http://localhost:3000');
+
 // Function that generates sliders and stores them into an array
 var sliders = new Array();
 function slider_generate(name,min,max,resolution){
@@ -54,7 +58,7 @@ function slider_generate(name,min,max,resolution){
 };
 
 // Function that builds the sliders
-function build_sliders(alt,csv){
+function build_sliders(){
     var total_rows = Math.ceil(sliders.length/3);
     var slider_count = 0;
     for (var i = 0; i < total_rows; i++){
@@ -79,7 +83,7 @@ function build_slider_autopilot(div_id){
 		var resolution = 1;
 		// $('#'+div_id+'_autopilot').css("background-color:red;");
 		$('#' + autopilot).append('<div class="autopilot-container" id="'+autopilot+'_holder"></div>');
-		var alternator = Toggle(autopilot+'_holder',"alternate?",["no","yes"],'10'+div_id+'69',null);
+		var alternator = Toggle(autopilot+'_holder',"alternate?",["no","yes"],'10'+div_id+'69',socket);
 		$('#'+autopilot+'_holder').append(alternator);
 		$('#'+autopilot+'_holder').append('Wave Type:<select name="waves" style="background-color:#f6f6f6;display:table-cell;width:100%;"><option value="Sin">Sin</option><option value="Square">Square</option><option value="Triangle">Triangle</option><option value="Sawtooth">Sawtooth</option></select><br>');
 		$('#'+autopilot+'_holder').append('Frequency (hz):<input alight="right" type="number" data-type="range"' // Attach Frequency Field 
@@ -103,7 +107,7 @@ function build_slider_autopilot(div_id){
 	// Checks if the autopilot fOR THAT SLIDER has already been built.
 	if ( $('#'+autopilot).is(':empty')) { // Build the first time, then don't touch it....
 		setup();
-		console.log("I should be building rightn now");
+		console.log("I should be building right now");
 	}
 
 	// Deals with making the thingy dissapear/appear
@@ -112,10 +116,17 @@ function build_slider_autopilot(div_id){
 	} else {
 		$('#'+autopilot).show();
 	}
-
 	// Do the console stuff if alternate is "yes"
-	console.log(alternator.val());
-
+	if (socket != null){
+        socket.on("10"+div_id+"69 changed to yes!",function(){
+			console.log("hit");
+				// $('#'+div_id+unique+"toggle").val(va).slider('refresh');
+		});
+        // $('#'+div_id+unique+"toggle").on('change',function(){
+        //     socket.emit('reporting', {'unique':unique, 'data':$(this).val()});
+        //     console.log('reporting', {'unique':unique, 'data':$(this).val()});
+        // });
+    };
 };
 
 //
