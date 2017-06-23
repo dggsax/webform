@@ -77,17 +77,18 @@ function build_sliders(){
 // Function that builds/hides the autopilot for a selected div
 function build_slider_autopilot(div_id){
 	var autopilot = div_id+'_autopilot';
-
 	// Setupsssss
 	var setup = function(){ // Build for that div the first time.
-		var min = 0;
-		var max = 69;
-		var resolution = 1;
 		// $('#'+div_id+'_autopilot').css("background-color:red;");
 		$('#' + autopilot).append('<div class="autopilot-container" id="'+autopilot+'_holder"></div>');
 		var alternator = Toggle(autopilot+'_holder',"alternate?",["no","yes"],'10'+div_id+'69',socket);
 		$('#'+autopilot+'_holder').append(alternator);
-		$('#'+autopilot+'_holder').append('Wave Type:<select name="waves" style="background-color:#f6f6f6;display:table-cell;width:100%;"><option value="Sin">Sin</option><option value="Square">Square</option><option value="Triangle">Triangle</option><option value="Sawtooth">Sawtooth</option></select><br>');
+		$('#'+autopilot+'_holder').append('Wave Type:<select name="waves"' 
+			+ 'style="background-color:#f6f6f6;display:table-cell;width:100%;">'
+			+ ' <option value="Sin">Sin</option>'
+			+ ' <option value="Square">Square</option>'
+			+ ' <option value="Triangle">Triangle</option>'
+			+ ' <option value="Sawtooth">Sawtooth</option></select><br>');
 		$('#'+autopilot+'_holder').append('Frequency (hz):<input alight="right" type="number" data-type="range"' // Attach Frequency Field 
 			+ 'name="'+div_id+'_frequency' // create the name
 			+'" id="'+div_id+'_frequency' // create the id 
@@ -113,10 +114,13 @@ function build_slider_autopilot(div_id){
 			+'" class="autopilot_frequency"' // define the class
 			+ ' style="background-color:#f6f6f6;display:table-cell;width:100%">');	// define the resolution (step)=
 	}
+	console.log(autopilot);
 
 	// Checks if the autopilot fOR THAT SLIDER has already been built.
 	if ( $('#'+autopilot).is(':empty')) { // Build the first time, then don't touch it....
 		setup();
+	} else {
+		console.log("for some reason it's not empty");
 	}
 
 	// Deals with making the thingy dissapear/appear
@@ -124,7 +128,7 @@ function build_slider_autopilot(div_id){
 		$('#'+autopilot).hide();
 	} else {
 		$('#'+autopilot).show();
-	}	
+	}
 };
 
 //

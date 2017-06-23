@@ -21,10 +21,9 @@ $(document).on("mouseleave", ".fa-cog", function(){
 
 $(document).on("click",".fa-cog",function(){
     build_slider_autopilot(this.id);
-    console.log(this.id);
-    d3.select("#main_area").select("#"+this.id+"_autopilot").style("background-color",("red"));
-    d3.select("#main_area").select("#"+this.id+"_autopilot").style("position","absolute").style("z-index","999999").style("background-color",("#f4f4f4"));
-  });
+    // d3.select("#main_area").select("#"+this.id+"_autopilot").style("position","absolute").style("z-index","999999").style("background-color",("#f4f4f4"));
+    console.log("fuck");
+});
 
 /////////////////////END OF AUTOPILOT/////////////////////
 
