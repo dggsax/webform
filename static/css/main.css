@@ -2,6 +2,7 @@ html *
 {
    font-family: Avenir;
    border: 0;
+   align-content: center;
 }
 
 .prestaging-container {
@@ -13,6 +14,15 @@ html *
     align-content: center;
     margin: auto;
     width: 50%;
+}
+
+#main_area {
+    margin: auto;
+}
+
+.toggle_holder > divr {
+    display: inline-block;
+    background-color: red;
 }
 
 /*
@@ -29,7 +39,6 @@ html *
     display: flex;
     flex-direction: row;
     display: inline-block;
-    border: 1px dotted grey;
 }
 
 .slider-item {
@@ -70,6 +79,28 @@ div.slider-item {
     display: -webkit-flex;
     display: flex;
 }
+
+/*
+*********************************
+**                             **
+**    Deals with draggables    **
+**                             **
+*********************************
+*/
+
+.autopilot-container {
+    width: auto;   
+    border: 3px solid lightblue;
+    /*offset-inline-end: 300px; */
+}
+
+/*
+*********************************
+**                             **
+**    Deals with draggables    **
+**                             **
+*********************************
+*/
 
 .draggable { 
     padding: 0.5em; 

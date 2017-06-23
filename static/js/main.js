@@ -24,6 +24,7 @@ $(document).on("click",".fa-cog",function(){
     // console.log(this.parents());
     var settings = document.createElement("div");
     console.log(settings);
+    build_slider_autopilot(this.id);
 });
 
 /////////////////////END OF AUTOPILOT/////////////////////
@@ -75,6 +76,7 @@ $(document).on('pageinit', function() {
             socket.emit('serial disconnect request');
         }
     });
+
     //Update switch to connected or disconnected based on return socket from server
     socket.on('serial connected', function(){
         $('#connect').text('Connected (Click to Disconnect)');
@@ -97,6 +99,9 @@ $(document).on('pageinit', function() {
         socket.emit('alternate state', $(this).val());
     });
 
+    // Build default toggles
+    var toggle_lock = new lockToggle("lock","Page Lock",["Locked","Unlocked"],69,socket);
+    var toggle_csv = new Toggle("generate_csv","Generate CSV?",["OFF","ON"],420,socket);
     //update serial port upon selection: 
     $('#serialport').change(function(){
     console.log("serialport selected");
@@ -119,8 +124,7 @@ $(document).on('pageinit', function() {
         var alt = false;
         var csv = false;
         //WIPE THE SLATE CLEAN:
-        $("#plot_area").empty(); //do it this way because jquery needs to be cleaned properly
-        $("#param_area").empty();
+        $("#main_area").empty(); //do it this way because jquery needs to be cleaned properly
         sliders = new Array();
         plots = new Array();
         plot_handlers = new Array();
@@ -169,7 +173,8 @@ $(document).on('pageinit', function() {
         }
         build_sliders(alt,csv);
         build_plots();
-       
+        // $('#lock').css("display:unset;");
+        // $(".draggable").addClass("ui-draggable-disable");
         socket.emit('all set from gui');
         ALREADY_BUILT = true;
 
@@ -177,7 +182,7 @@ $(document).on('pageinit', function() {
             $( ".draggable" ).draggable({
                 containment: "#main_area",
                 snap: true
-            })
+            });
         } );
     };
 
@@ -187,6 +192,15 @@ $(document).on('pageinit', function() {
     //                       //
     ///////////////////////////
 
+    // When the page is locked/unlocked
+    $('#lock').change(function(){
+        console.log("lock status changed");
+        var unique = 696969;
+        var val = $(this).children().children().eq(1).val();
+        socket.emit('toggle_update_'+unique,val)
+    });
+
+    
     $('._slider').change(function(){
         var message = 'change';
         console.log(message);

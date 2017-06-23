@@ -19,6 +19,7 @@
     <script src="../static/js/jquery.mobile.min.js"></script>
     <script src="../static/js/slider.js"></script>
 	<script src="../static/js/toggle.js"></script>
+	<script src="../static/js/locktoggle.js"></script>
 	<script src="../static/js/timeplot.js"></script>
     <script src="../static/js/main.js"></script>
 
@@ -60,11 +61,9 @@
 			<h3>Parameters:</h3>
 		</div>
 		<div>
-			<label for="csv-maker">Generate CSV?:</label>
-			<select name="csv-maker" id="csv" data-role="slider">
-				<option value=0>OFF</option>
-				<option value=1>ON </option>
-			</select>
+			<!-- Generate the generate CSV toggle -->
+			<div id="generate_csv"></div>
+			<!-- Generate the lock toggle which controls draggability of the page -->
 			<div id="lock"></div>
 			<!-- <label for="alternator">Alternate Desired?:</label>
 			<select name="alternator" id="alternator" data-role="slider">
@@ -74,11 +73,7 @@
 
 		</div>
 
-		<div id="main_area"></div>
-		<br>
-		<div>
-		  <button class="pure-button pure-button-primary" href="/webform/pages/index.html">Back</button>
-		</div>
+		<div id="main_area" style="margin:auto;"></div>
 	</div>
 </body>
 </html>

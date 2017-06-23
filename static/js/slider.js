@@ -47,7 +47,8 @@ function slider_generate(name,min,max,resolution){
 	$(animated_slider).append(slider_dial);
 	$(slider).append(animated_slider);
 	$(newb).append(slider);
-	$(newb).append('<i class="fa fa-cog fa-2x slider-item" aria-hidden="true" id="' + name + '""></i>')
+	$(newb).append('<i class="fa fa-cog fa-2x slider-item slider-settings" aria-hidden="true" id="' + name + '"></i>')
+	$(newb).append('<div id="'+ name +'_autopilot"></div>')
 	// $(container).append(newb);
 	sliders.push({'name': name, 'obj':newb});
 };
@@ -70,3 +71,33 @@ function build_sliders(alt,csv){
     }
 };
 
+// Function that builds/hides the autopilot for a selected div
+function build_slider_autopilot(div_id){
+	var autopilot = div_id+'_autopilot';
+	var setup = function(){ // Build for that div the first time.
+		// $('#'+div_id+'_autopilot').css("background-color:red;");
+		$('#' + autopilot).append('<div class="autopilot-container" id="'+autopilot+'_holder"></div>');
+		console.log(autopilot+'_holder');
+		var alternator = Toggle(autopilot+'_holder',"alternate?",["no","yes"],'10'+div_id+'69',null);
+		$('#'+autopilot+'_holder').append(alternator);
+	}
+
+	// Checks if the autopilot fOR THAT SLIDER has already been built.
+	if ( $('#'+autopilot).is(':empty')) { // Build the first time, then don't touch it....
+		setup();
+		console.log("I should be building rightn now");
+	}
+
+	// Deals with making the thingy dissapear/appear
+	if ( $('#'+autopilot).is(':visible') ){
+		$('#'+autopilot).hide();
+	} else {
+		$('#'+autopilot).show();
+	}
+}
+
+//
+//$('#alternator').change(function(){
+// 	console.log("desiring alternating!");
+// 	socket.emit('alternate state', $(this).val());
+// });
