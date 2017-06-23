@@ -25,7 +25,8 @@ $(document).on("click",".fa-cog",function(){
     var settings = document.createElement("div");
     console.log(settings);
     build_slider_autopilot(this.id);
-});
+    d3.select("#main_area").select("#"+this.id+"_autopilot").style("position","absolute").style("z-index","999999").style("background-color",("#f4f4f4"));
+  });
 
 /////////////////////END OF AUTOPILOT/////////////////////
 
@@ -34,30 +35,30 @@ var isActive;
 $(document).on('pageinit', function() {
 
     isActive = true; //used for turning off plot updates when page not in focus
-    window.onfocus = function () { 
+    window.onfocus = function () {
       console.log("IN FOCUS");
-      isActive = true; 
+      isActive = true;
       $('.sbs').css('background-color',"#f9f9f9");
-    }; 
-    
-    window.onblur = function () { 
+    };
+
+    window.onblur = function () {
       console.log("OUT OF FOCUS");
-      isActive = false; 
+      isActive = false;
       $('.sbs').css('background-color',"#ffde46");
 
-    }; 
+    };
 
     //Handle sockets with server:
- 
+
     var socket = io('http://localhost:3000');
 
     //Server sending socket containing list of valid serial ports:
     socket.on('serial list display', function(portlist){
         $("#serialport").children().remove().end();
         $.each(portlist, function (i, item) {
-            $('#serialport').append($('<option>', { 
+            $('#serialport').append($('<option>', {
                 value: i,
-                text : item.comName 
+                text : item.comName
             }));
             $('#serialport option[value='+i+']').prop('selected','selected').change();
         });
@@ -102,12 +103,12 @@ $(document).on('pageinit', function() {
     // Build default toggles
     var toggle_lock = new lockToggle("lock","Page Lock",["Locked","Unlocked"],69,socket);
     var toggle_csv = new Toggle("generate_csv","Generate CSV?",["OFF","ON"],420,socket);
-    //update serial port upon selection: 
+    //update serial port upon selection:
     $('#serialport').change(function(){
     console.log("serialport selected");
         socket.emit('serial select', $('#serialport option:selected').text());
     });
-    //upadte baud rate upon selection: 
+    //upadte baud rate upon selection:
     $('#baud').change(function(){
         socket.emit('baud select', $('#baud option:selected').text());
     });
@@ -200,13 +201,13 @@ $(document).on('pageinit', function() {
         socket.emit('toggle_update_'+unique,val)
     });
 
-    
+
     $('._slider').change(function(){
         var message = 'change';
         console.log(message);
         console.log($(this).attr('id'),$(this).val());
-        socket.emit(message,{id: $(this).attr('id'), val:$(this).val()}); 
-    }); 
+        socket.emit(message,{id: $(this).attr('id'), val:$(this).val()});
+    });
 
     /////////////////////////////
     //                         //
@@ -217,7 +218,7 @@ $(document).on('pageinit', function() {
     socket.on('setup slider', function(thing){
         $("#"+thing[0]).val(parseFloat(thing[1])).slider("refresh");
     })
-    
+
     socket.on('note', function(msg) {
         if (isActive){
             if (HEADROOM_PRESENT){
@@ -248,7 +249,7 @@ $(document).on('pageinit', function() {
                 parent.y_range[0] = parent_mid-(parent_mid - parent.y_range[0])*0.5;
                 break;
             case parid+"RS":
-                parent.y_range =parent.y_range_orig.slice(0); 
+                parent.y_range =parent.y_range_orig.slice(0);
                 break;
             case parid+"OD":
                 var diff = parent.y_range[1] - parent.y_range[0];
@@ -267,7 +268,7 @@ $(document).on('pageinit', function() {
     });
 
     $(document).on("click","")
-}); 
+});
 
 function LWChart(div_id,color,y_range,height,width,vals){
     this.div_id = div_id;
@@ -278,7 +279,7 @@ function LWChart(div_id,color,y_range,height,width,vals){
     this.margin = {top: 20, right: 30, bottom: 30, left: 40};
     this.data = d3.range(this.vals).map(function() { return 0; });
     this.height = height - this.margin.top - this.margin.bottom;
-    this.width = width - this.margin.right - this.margin.left; 
+    this.width = width - this.margin.right - this.margin.left;
     this.setup = function(){
         this.chart = d3.select("#"+this.div_id).append("svg")
         .attr("id","svg_for_"+this.div_id).attr("width",width).attr("height",height).attr('style',"display:inline-block;").attr("class", "gsc");
@@ -291,7 +292,7 @@ function LWChart(div_id,color,y_range,height,width,vals){
         this.chart.append("g").attr("transform","translate("+this.margin.left +","+ this.margin.top + ")");
         this.chart.append("g").attr("class", "x axis")
         .attr("transform","translate("+this.margin.left+","+(this.height+this.margin.top)+")").call(this.x_axis);
-        this.chart.append("g").attr("class", "y axis").attr("transform","translate("+this.margin.left+","+this.margin.top+")").call(this.y_axis); 
+        this.chart.append("g").attr("class", "y axis").attr("transform","translate("+this.margin.left+","+this.margin.top+")").call(this.y_axis);
         this.chart.append("g").attr("class", "grid")
         .attr("transform","translate("+this.margin.left+","+(this.height+this.margin.top)+")").call(this.x_grid);
         this.chart.append("g").attr("class", "grid").attr("transform","translate("+this.margin.left+","+this.margin.top+")").call(this.y_grid);
@@ -303,14 +304,14 @@ function LWChart(div_id,color,y_range,height,width,vals){
         .attr("width",this.width).attr("height",this.height);
         this.trace = this.chart.append("g").append("path").datum(this.data).attr("class","line")
         .attr("d",this.line).attr("clip-path", "url(#"+this.clip_id+")");
-        }; 
+        };
     this.setup();
     //console.log(this.div_id);
-    $("#"+this.div_id).prepend("<div class ='button_container' id = \""+this.div_id+"BC2\" >"); 
+    $("#"+this.div_id).prepend("<div class ='button_container' id = \""+this.div_id+"BC2\" >");
     $("#"+this.div_id+"BC2").append("<button class='scaler' id=\""+this.div_id+"VP\">Z+</button><br>");
     $("#"+this.div_id+"BC2").append("<button class='scaler' id=\""+this.div_id+"RS\">RS</button><br>");
     $("#"+this.div_id+"BC2").append("<button class='scaler' id=\""+this.div_id+"VM\">Z-</button><br>");
-    $("#"+this.div_id).prepend("<div class ='button_container' id = \""+this.div_id+"BC1\" >"); 
+    $("#"+this.div_id).prepend("<div class ='button_container' id = \""+this.div_id+"BC1\" >");
     $("#"+this.div_id+"BC1").append("<button class='scaler' id=\""+this.div_id+"OI\">O+</button><br>");
     $("#"+this.div_id+"BC1").append("<button class='scaler' id=\""+this.div_id+"OD\">O-</button><br>");
     this.step = function(value){
