@@ -17,14 +17,14 @@
 // Function that generates sliders and stores them into an array
 var sliders = new Array();
 function slider_generate(name,min,max,resolution){
-	var newb = document.createElement("div"); 
+	var newb = document.createElement("div");
 	$(newb).addClass("slider-container draggable");
 	$(newb).attr('id','my_num_row');
 	$(newb).append('<label class="slider-item" style="border:0px solid red" for="'+name+'">'+name+':</label>'); // label as slider item
-	var slider = document.createElement("div"); 
+	var slider = document.createElement("div");
 	$(slider).addClass("ui-slider slider-item"); // slider as slider item
 	$(slider).append('<input type="number" data-type="range" name="'+name // create the name
-		+'" id="'+name // create the id 
+		+'" id="'+name // create the id
 		+'" value="0" min="'+min // define the min
 		+'" max="'+max // define the max
 		+'" step='+resolution // define the resolution (step)
@@ -66,7 +66,8 @@ function build_sliders(alt,csv){
           slider_count = slider_count+1;
         }
       }
-      $(slider_div).appendTo($("#main_area")).trigger("create");         
+
+      $(slider_div).appendTo($("#main_area")).trigger("create");
     }
 };
 
@@ -74,36 +75,28 @@ function build_sliders(alt,csv){
 function build_slider_autopilot(div_id){
 	var autopilot = div_id+'_autopilot';
 	var setup = function(){ // Build for that div the first time.
-		var min = 0;
-		var max = 69;
-		var resolution = 1;
 		// $('#'+div_id+'_autopilot').css("background-color:red;");
 		$('#' + autopilot).append('<div class="autopilot-container" id="'+autopilot+'_holder"></div>');
+		console.log(autopilot+'_holder');
 		var alternator = Toggle(autopilot+'_holder',"alternate?",["no","yes"],'10'+div_id+'69',null);
 		$('#'+autopilot+'_holder').append(alternator);
-		$('#'+autopilot+'_holder').append('Wave Type:<select name="waves" style="background-color:#f6f6f6;display:table-cell;width:100%;"><option value="Sin">Sin</option><option value="Square">Square</option><option value="Triangle">Triangle</option><option value="Sawtooth">Sawtooth</option></select><br>');
-		$('#'+autopilot+'_holder').append('Frequency (hz):<input alight="right" type="number" data-type="range"' // Attach Frequency Field 
-			+ 'name="'+div_id // create the name
-			+'" id="'+div_id // create the id 
-			+'" value="0" min="'+min // define the min
-			+'" max="'+max // define the max
-			+'" step='+resolution
-			+'" class="autopilot_frequency"'
-			+ ' style="background-color:#f6f6f6;display:table-cell;width:100%"><br>');	// define the resolution (step)
-		$('#'+autopilot+'_holder').append('Amplitude (unit):<input alight="right" type="number" data-type="range"' // Attach Frequency Field 
-			+ 'name="'+div_id // create the name
-			+'" id="'+div_id // create the id 
-			+'" value="0" min="'+min // define the min
-			+'" max="'+max // define the max
-			+'" step='+resolution
-			+'" class="autopilot_frequency"'
-			+ ' style="background-color:#f6f6f6;display:table-cell;width:100%">');	// define the resolution (step)
 	}
 
 	// Checks if the autopilot fOR THAT SLIDER has already been built.
 	if ( $('#'+autopilot).is(':empty')) { // Build the first time, then don't touch it....
 		setup();
-		console.log("I should be building rightn now");
+		d3.select("#main_area").select("#"+autopilot)
+    .style("top","120px").style("position","absolute")
+    .style("z-index","999999")
+    .style("background-color",("#f4f4f4"))
+    .append("div").attr("id",autopilot).style("height","0px")
+		.style("width","0px")
+		.style("position","relative")
+		.style("bottom","100px")
+		.style("border-width", "100px")
+		.style("border-color", "transparent transparent red transparent")
+		.style("border-style", "solid");
+		console.log("I should be building right now");
 	}
 
 	// Deals with making the thingy dissapear/appear
@@ -112,11 +105,7 @@ function build_slider_autopilot(div_id){
 	} else {
 		$('#'+autopilot).show();
 	}
-
-	// Do the console stuff if alternate is "yes"
-	console.log(alternator.val());
-
-};
+}
 
 //
 //$('#alternator').change(function(){
