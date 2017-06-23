@@ -80,13 +80,7 @@ function build_slider_autopilot(div_id){
 	var autopilot = div_id+'_autopilot';
 	// Setupsssss
 	var setup = function(){ // Build for that div the first time.
-		// $('#'+div_id+'_autopilot').css("background-color:red;");
 		$('#' + autopilot).append('<div class="autopilot-container" id="'+autopilot+'_holder"></div>');
-<<<<<<< HEAD
-		console.log(autopilot+'_holder');
-		var alternator = Toggle(autopilot+'_holder',"alternate?",["no","yes"],'10'+div_id+'69',null);
-		$('#'+autopilot+'_holder').append(alternator);
-=======
 		var alternator = Toggle(autopilot+'_holder',"alternate?",["no","yes"],'10'+div_id+'69',socket);
 		$('#'+autopilot+'_holder').append(alternator);
 		$('#'+autopilot+'_holder').append('Wave Type:<select name="waves"' 
@@ -113,42 +107,12 @@ function build_slider_autopilot(div_id){
 			+'" value="0" ' // define the value
 			+'" class="autopilot_frequency"' // define the class
 			+ ' style="background-color:#f6f6f6;display:table-cell;width:100%">');	// define the resolution (step)=
-<<<<<<< HEAD
->>>>>>> cbcb4aa2daadbffb124ff107816ad14db37417d1
-=======
-		$('#'+autopilot+'_holder').append('Update Frequency (ms):<input alight="right" type="number" data-type="range"' // Attach Frequency Field 
-			+ 'name="'+div_id+'_updatefreq' // create the name
-			+'" id="'+div_id+'_updatefreq' // create the id 
-			+'" value="0" ' // define the value
-			+'" class="autopilot_frequency"' // define the class
-			+ ' style="background-color:#f6f6f6;display:table-cell;width:100%">');	// define the resolution (step)=
->>>>>>> b78408e27db742944bc19e4164cfd967d7b3cc45
 	}
 	console.log(autopilot);
 
 	// Checks if the autopilot fOR THAT SLIDER has already been built.
 	if ( $('#'+autopilot).is(':empty')) { // Build the first time, then don't touch it....
 		setup();
-<<<<<<< HEAD
-	} else {
-		console.log("for some reason it's not empty");
-=======
-<<<<<<< HEAD
-		d3.select("#main_area").select("#"+autopilot)
-    .style("top","120px").style("position","absolute")
-    .style("z-index","999999")
-    .style("background-color",("#f4f4f4"))
-    .append("div").attr("id",autopilot).style("height","0px")
-		.style("width","0px")
-		.style("position","relative")
-		.style("bottom","100px")
-		.style("border-width", "100px")
-		.style("border-color", "transparent transparent red transparent")
-		.style("border-style", "solid");
-		console.log("I should be building right now");
-=======
->>>>>>> cbcb4aa2daadbffb124ff107816ad14db37417d1
->>>>>>> 228b491cfcd894fa637c05188c0ce092dbb09f67
 	}
 
 	// Deals with making the thingy dissapear/appear
@@ -156,17 +120,8 @@ function build_slider_autopilot(div_id){
 		$('#'+autopilot).hide();
 	} else {
 		$('#'+autopilot).show();
-<<<<<<< HEAD
 	}
-=======
-<<<<<<< HEAD
-	}
-}
-=======
-	}	
->>>>>>> 228b491cfcd894fa637c05188c0ce092dbb09f67
 };
->>>>>>> cbcb4aa2daadbffb124ff107816ad14db37417d1
 
 //
 //$('#alternator').change(function(){
