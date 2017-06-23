@@ -12,15 +12,7 @@ var TOGGLE_PARAM = '';
 /////////////////////
 
 $(document).on("mouseover", ".fa-cog", function(){
-<<<<<<< HEAD
-
     $(this).css("background-color","#e9e9e9")
-
-    $(this).css("background-color","#d2d2d2")
-
-=======
-    $(this).css("background-color","#d2d2d2")
->>>>>>> 107ab5a6a18d8f6fd89b4e67242e3be23a92e5ef
 });
 
 $(document).on("mouseleave", ".fa-cog", function(){
@@ -29,25 +21,12 @@ $(document).on("mouseleave", ".fa-cog", function(){
 
 $(document).on("click",".fa-cog",function(){
     build_slider_autopilot(this.id);
-<<<<<<< HEAD
-
     // d3.select("#main_area").select("#"+this.id+"_autopilot").style("position","absolute").style("z-index","999999").style("background-color",("#f4f4f4"));
     console.log("fuck");
 });
 
 /////////////////////END OF AUTOPILOT/////////////////////
 
-
-=======
->>>>>>> 107ab5a6a18d8f6fd89b4e67242e3be23a92e5ef
-    d3.select("#main_area").select("#"+this.id+"_autopilot").style("position","absolute").style("z-index","999999").style("background-color",("#f4f4f4"));
-
-
-/////////////////////END OF AUTOPILOT///////////////////
-<<<<<<< HEAD
-
-=======
->>>>>>> 107ab5a6a18d8f6fd89b4e67242e3be23a92e5ef
 var datapoints = 100
 var isActive;
 $(document).on('pageinit', function() {
