@@ -32,45 +32,31 @@ function plot_generate(name,min,max,datapoints){
 // Function that builds timeplots
 var plot_handlers = new Array();
 function build_plots(){
-    var rows,cols;
-    //figure out how many rows and columns of plots
-    switch (true){
-        case plots.length == 4:
-            rows = 2;
-            cols = 2;
-            break;
-        case plots.length == 3:
-            rows = 1;
-            cols = 3;
-            break;
-        case plots.length>4:
-            rows = Math.ceil(plots.length/3);
-            cols = 3;
-    }
-    var plot_count = 0
+    var plot_count = 0;
+    $.each(plots, function(index, value){
+      $(value['plot']).appendTo($("#main_area"));
+      plot_count += 1;
+      console.log("wtf am I doing here index: " + value['plot']);
+    })
 
-    // Start constructing the html
-    for (var i=0; i<rows;i++){
-        // Think of this like building a grid
-        var new_row = document.createElement("div"); // build div
-        $(new_row).addClass("row row-centered"); // define that div as a row
-        var new_col = document.createElement("div"); // create columns div for that row
-        $(new_col).addClass("col-md-12"); // make a column based off of css library
-        $(new_col).appendTo($(new_row)); // attach that column to the row
-        for (var j=0; j<cols; j++){ // for however many columns are necessary for that row
-            if (plot_count < plots.length){ 
-                $(plots[plot_count]['plot']).appendTo($(new_col));
-                plot_count=plot_count+1;
-            }
-        }
-        $(new_row).appendTo($("#main_area"));   
-    }
     //angle =new LWChart("Angle","red",[-100, 100],175,PLOT_HEIGHT,PLOT_WIDTH,datapoints);
     for (var i=0; i<plot_count;i++){
         var name = plots[i]['name'];
         var min = plots[i]['min'];
         var max = plots[i]['max'];
         var datapoints = plots[i]['datapoints'];
+        if(datapoints[datapoints.length-1] == "bar" || datapoints[datapoints.length-1] == "line"){
+          console.log("It worked!");
+          var type = datapoints[datapoints.length-1];
+          datapoints.splice(-1,1);
+          console.log("name: " + name );
+          console.log("max: " + max);
+          console.log("min: " + min);
+          console.log("type: " + type);
+          plot_handlers[name] = new Parallel_Plot(datapoints.length,datapoints,PLOT_WIDTH,PLOT_HEIGHT,max,min,"black",name,type);
+        }
+        else{
         plot_handlers[name] = new LWChart(name,"red",[min,max],PLOT_HEIGHT,PLOT_WIDTH,datapoints);
+        }
     }
 };
