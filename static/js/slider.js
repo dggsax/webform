@@ -142,7 +142,8 @@ function build_slider_autopilot(div_id){
 		.style("border-style", "solid")
 		.style("bottom","7px")
 		.style("left", "6px")
-		.attr("class","triangle");
+		.attr("class","triangle")
+		.attr("id", autopilot + "_triangle");
 	} else {
 		console.log("for some reason it's not empty");
 
@@ -151,11 +152,11 @@ function build_slider_autopilot(div_id){
 	// Deals with making the thingy dissapear/appear
 	if ( $('#'+autopilot).is(':visible') ){
 		$('#'+autopilot).hide();
-		$('.triangle').hide();
+		$('#' + autopilot + '_triangle').hide();
 	} else {
 		$('#'+autopilot).show();
 
-		$('.triangle').show();
+		$('#' + autopilot + '_triangle').show();
 
 	}
 };
