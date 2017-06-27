@@ -36,8 +36,7 @@ function build_plots(){
     $.each(plots, function(index, value){
       $(value['plot']).appendTo($("#main_area"));
       plot_count += 1;
-      console.log("wtf am I doing here index: " + value['plot']);
-    })
+    });
 
     //angle =new LWChart("Angle","red",[-100, 100],175,PLOT_HEIGHT,PLOT_WIDTH,datapoints);
     for (var i=0; i<plot_count;i++){

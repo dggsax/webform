@@ -73,6 +73,36 @@ $(document).on('pageinit', function() {
         }else{
             socket.emit('serial disconnect request');
         }
+        var mouseX, mouseY;
+        console.log(plot_handlers);
+        $(document).mousemove(function(e){
+          mouseX = e.pageX;
+          mouseY = e.pageY;
+        });
+        plot_count = 0;
+        timer = setInterval(function(){
+          plot_count = 0;
+          $.each(plots, function(index, value){
+            plot_count += 1;
+          });
+          for (var i=0; i<plot_count;i++){
+              var name = plots[i]['name'];
+              switch(plot_handlers[name].constructor.name){
+                case "LWChart":
+                  console.log("LWChart!");
+                  plot_handlers[name].step([200,500]);
+                  break;
+                case "Parallel_Plot":
+                  console.log("Parallel Plot!");
+                  plot_handlers[name].step_p([200,500]);
+                  break;
+                default:
+                  console.log("neither!");
+                  break;
+
+             }
+          }
+        }, 10);
     });
 
     //Update switch to connected or disconnected based on return socket from server
@@ -244,6 +274,7 @@ $(document).on('pageinit', function() {
     });
 
     $(document).on("click", ".scaler",function(){
+
         var parent = plot_handlers[$(this).parent().parent().attr("id")];
         //console.log($(this).attr("id"));
         var parid = $(this).parent().parent().attr("id")
@@ -279,8 +310,10 @@ $(document).on('pageinit', function() {
         parent.update();
     });
 
-    $(document).on("click","")
+
 });
+
+
 
 function LWChart(div_id,color,y_range,height,width,vals){
     this.div_id = div_id;

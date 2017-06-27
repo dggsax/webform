@@ -23,7 +23,7 @@ function Parallel_Plot(num_values,labels,plot_width,plot_height,max_val,min_val,
   var tickLabels = labels;
   var max = (plot_height-margin.top);
   var min = (margin.bottom+min_val);
-  // d3.select("#" + unique).append("div").attr("id","plotbox"+unique+"_overall").append("div").attr("class","chart").attr("id","plotbox"+unique);
+  d3.select("#" + unique).append("div").attr("id","plotbox"+unique+"_overall").append("div").attr("class","chart").attr("id","plotbox"+unique);
   //create section for buttons
   // this.button_container1 = d3.select("#" + unique).append("div")
   //         .attr("class","button_container")
@@ -38,12 +38,12 @@ function Parallel_Plot(num_values,labels,plot_width,plot_height,max_val,min_val,
   // this.button_container2.append("button").attr("class","scaler").attr("id",unique+"VRS").html("RS");
   // this.button_container2.append("button").attr("class","scaler").attr("id",unique+"VM").html("Z-");
   $("#"+unique).prepend("<div class ='button_container' id = \""+unique+"BC2\" >");
-  $("#"+unique+"BC2").append("<button class='scaler' id=\""+unique+"VP\">Z+</button><br>");
-  $("#"+unique+"BC2").append("<button class='scaler' id=\""+unique+"RS\">RS</button><br>");
-  $("#"+unique+"BC2").append("<button class='scaler' id=\""+unique+"VM\">Z-</button><br>");
+  $("#"+unique+"BC2").append("<button class='scalerp' id=\""+unique+"VP\">Z+</button><br>");
+  $("#"+unique+"BC2").append("<button class='scalerp' id=\""+unique+"RS\">RS</button><br>");
+  $("#"+unique+"BC2").append("<button class='scalerp' id=\""+unique+"VM\">Z-</button><br>");
   $("#"+unique).prepend("<div class ='button_container' id = \""+unique+"BC1\" >");
-  $("#"+unique+"BC1").append("<button class='scaler' id=\""+unique+"OI\">O+</button><br>");
-  $("#"+unique+"BC1").append("<button class='scaler' id=\""+unique+"OD\">O-</button><br>");
+  $("#"+unique+"BC1").append("<button class='scalerp' id=\""+unique+"OI\">O+</button><br>");
+  $("#"+unique+"BC1").append("<button class='scalerp' id=\""+unique+"OD\">O-</button><br>");
   function build_plot(){
     //create x axis scale
     var xScale = d3.scale.linear().domain([margin.left,plot_width]).range([margin.left,plot_width]);
@@ -57,7 +57,7 @@ function Parallel_Plot(num_values,labels,plot_width,plot_height,max_val,min_val,
             .attr("height",plot_height+"px")
             .attr("width",plot_width+"px")
             .style("display", "inline-block")
-            .attr("id","svg_for_" + unique);
+            .attr("id","svg_for_p" + unique);
     this.svg.append("defs").append("svg:clipPath").attr("id",unique+"clip")
     .append("svg:rect").attr("id",unique+"clipRect").attr("x",margin.left)
     .attr("y",margin.top).attr("width",plot_width-margin.left).attr("height",plot_height-margin.bottom-margin.top);
@@ -107,7 +107,7 @@ function Parallel_Plot(num_values,labels,plot_width,plot_height,max_val,min_val,
       .style("fill",color);
       for(i = 0; i<self.dataArray.length-1;i++){
 
-        d3.select("#svg_for_plotbox"+unique).select(".bar_container").append("line")
+        d3.select("#svg_for_p"+unique).select(".bar_container").append("line")
         .attr("id","line"+i)
         .attr("x1",ticks[i])
         .attr("y1",function(d,i){return scaler(d);})
@@ -131,7 +131,7 @@ function Parallel_Plot(num_values,labels,plot_width,plot_height,max_val,min_val,
     update_graph();
   }
 
-  $(".button_container").on("click",function(event){
+  $(document).on("click", ".scalerp",function(event){
       // console.log(event.target.id);
       switch(event.target.id){
           case unique+"VM":
@@ -145,7 +145,7 @@ function Parallel_Plot(num_values,labels,plot_width,plot_height,max_val,min_val,
               update_scale();
               console.log("plus!");
               break;
-          case unique+"VRS":
+          case unique+"RS":
               max_val = start_max;
               min_val = start_min;
 
@@ -171,19 +171,18 @@ function Parallel_Plot(num_values,labels,plot_width,plot_height,max_val,min_val,
     function update_graph(){
       console.log(yScale(5));
       //remove svg
-      d3.select("#svg_for_plotbox"+unique).remove();
+      d3.select("#svg_for_p"+unique).remove();
       build_plot();
 
       }
 
-  this.step = function(values){
+  this.step_p = function(values){
     var newData = [];
     for(i = 0; i<values.length;i++){
       newData[i] = scaler(values[i]);
     }
-    console.log("original: " + values);
     if(type == "bar"){
-    d3.select("#svg_for_plotbox"+unique).selectAll(".bar")
+    d3.select("#svg_for_p"+unique).selectAll(".bar")
     .attr("transform","scale(1,-1)")
     .attr("height",function(d,i){
       console.log("i: " + newData[i]);
@@ -192,10 +191,12 @@ function Parallel_Plot(num_values,labels,plot_width,plot_height,max_val,min_val,
         return  -1*plot_height+margin.bottom;});
     }
     else if(type == "line"){
-      d3.select("#svg_for_plotbox"+unique).selectAll("circle")
+      console.log("notice meeee" + values);
+      console.log("this is the bottom margin: " + margin.bottom);
+      d3.select("#svg_for_p"+unique).selectAll("circle")
       .attr("cy",function(d,i){return (newData[i]+margin.bottom);});
       for(i = 0;i<newData.length-1;i++){
-      d3.select("#svg_for_plotbox"+unique).select("#line"+i)
+      d3.select("#svg_for_p"+unique).select("#line"+i)
       .attr("y1",newData[i]+margin.bottom)
       .attr("y2",newData[i+1]+margin.bottom);
       }
