@@ -101,5 +101,24 @@ def action(content):
     # socketio.emit("{} changed to {}!".format(unique,data))
     print("{} changed to {}!".format(unique,data))
 
+# Autopilot for sliders
+@socketio.on('reporting_1069')
+def action(content):
+    # Define variables
+    unique = content['unique']
+    div = content['div']
+    data = content['data'] 
+    # Emit Variables
+    socketio.emit('autopilot_{}'.format(unique),data=(div,data))
+    # break
+
+@socketio.on('lit')
+def action():
+    print("It is indeed very, very lit")
+
 if __name__ == '__main__':
     socketio.run(app, port=3000, debug=True)
+
+
+
+    

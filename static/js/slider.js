@@ -28,7 +28,7 @@ function slider_generate(name,min,max,resolution){
 	var slider = document.createElement("div");
 	$(slider).addClass("ui-slider slider-item"); // slider as slider item
 	$(slider).append('<input type="number" data-type="range" name="'+name // create the name
-		+'" id="'+name // create the id
+		+'" id="'+name+"_slider" // create the id
 		+'" value="0" min="'+min // define the min
 		+'" max="'+max // define the max
 		+'" step='+resolution // define the resolution (step)
@@ -77,53 +77,45 @@ function build_sliders(){
 // Function that builds/hides the autopilot for a selected div
 function build_slider_autopilot(div_id){
 	var autopilot = div_id+'_autopilot';
-	// Setupsssss
+	// Sets up everything......
 	var setup = function(){ // Build for that div the first time.
 		$('#' + autopilot).append('<div class="autopilot-container" id="'+autopilot+'_holder"></div>');
-		var alternator = Toggle(autopilot+'_holder',"alternate?",["no","yes"],'10'+div_id+'69',socket);
+		var alternator = Toggle(autopilot+'_holder',"alternate?",["no","yes"],'1069',socket);
 		$('#'+autopilot+'_holder').append(alternator);
-
-		$('#'+autopilot+'_holder').append('Wave Type:<select name="waves"');
-
 		$('#'+autopilot+'_holder').append('Wave Type:<select name="waves"'
-
 			+ 'style="background-color:#f6f6f6;display:table-cell;width:100%;">'
-			+ ' <option value="Sin">Sin</option>'
-			+ ' <option value="Square">Square</option>'
-			+ ' <option value="Triangle">Triangle</option>'
-			+ ' <option value="Sawtooth">Sawtooth</option></select><br>');
-
-		$('#'+autopilot+'_holder').append('Frequency (hz):<input alight="right" type="number" data-type="range"') // Attach Frequency Field
-
+			+ ' <option selected="selected" value="default">Default</option>'
+			+ ' <option value="sin">Sin</option>'
+			+ ' <option value="square">Square</option>'
+			+ ' <option value="triangle">Triangle</option>'
+			+ ' <option value="sawtooth">Sawtooth</option></select><br>');
 		$('#'+autopilot+'_holder').append('Frequency (hz):<input alight="right" type="number" data-type="range"' // Attach Frequency Field
-
 			+ 'name="'+div_id+'_frequency' // create the name
-			+'" id="'+div_id+'_frequency' // create the id
+			+'" id="'+div_id+'_autopilot_holder_frequency' // create the id
 			+'" value="0"' // define the value
 			+'" class="autopilot_frequency"'
 			+ ' style="background-color:#f6f6f6;display:table-cell;width:100%"><br>');	// define the frequency type
 		$('#'+autopilot+'_holder').append('Amplitude (unit):<input alight="right" type="number" data-type="range"' // Attach Frequency Field
 			+ 'name="'+div_id+'_amplitude' // create the name
-			+'" id="'+div_id+'_amplitude' // create the id
+			+'" id="'+div_id+'_autopilot_holder_amplitude' // create the id
 			+'" value="0" ' // define the value
 			+'" class="autopilot_amplitude"'
 			+ ' style="background-color:#f6f6f6;display:table-cell;width:100%">');	// define the resolution (step)
 		$('#'+autopilot+'_holder').append('Offset (unit):<input alight="right" type="number" data-type="range"' // Attach Frequency Field
 			+ 'name="'+div_id+'_offset' // create the name
-			+'" id="'+div_id+'_offset' // create the id
+			+'" id="'+div_id+'_autopilot_holder_offset' // create the id
 			+'" value="0" ' // define the value
 			+'" class="autopilot_frequency"' // define the class
 			+ ' style="background-color:#f6f6f6;display:table-cell;width:100%">');	// define the resolution (step)=
 		$('#'+autopilot+'_holder').append('Update Frequency (ms):<input alight="right" type="number" data-type="range"' // Attach Frequency Field
 			+ 'name="'+div_id+'_updatefreq' // create the name
-			+'" id="'+div_id+'_updatefreq' // create the id
+			+'" id="'+div_id+'_autopilot_holder_updatefreq' // create the id
 			+'" value="0" ' // define the value
 			+'" class="autopilot_frequency"' // define the class
 			+ ' style="background-color:#f6f6f6;display:table-cell;width:100%">');	// define the resolution (step)=
-
+		// $('#'+autopilot+'_holder').append('Update Autopilot:<input type="submit" value="Submit" class="ui-btn">');
 	}
-	console.log(autopilot);
-
+	
 	// Checks if the autopilot fOR THAT SLIDER has already been built.
 	if ( $('#'+autopilot).is(':empty')) { // Build the first time, then don't touch it....
 		setup();
@@ -143,25 +135,81 @@ function build_slider_autopilot(div_id){
 		.style("bottom","7px")
 		.style("left", "6px")
 		.attr("class","triangle");
-	} else {
-		console.log("for some reason it's not empty");
-
 	}
-
 	// Deals with making the thingy dissapear/appear
 	if ( $('#'+autopilot).is(':visible') ){
 		$('#'+autopilot).hide();
 		$('.triangle').hide();
 	} else {
 		$('#'+autopilot).show();
-
 		$('.triangle').show();
-
 	}
+
+	if (socket != null){
+        socket.on("autopilot_1069",function(div,value){
+        	var wave_type = $('#' + div + ' > select[name=waves] > option:selected').val();
+        	var frequency = $('#'+div+'_frequency').attr('value');
+        	var amplitude = $('#'+div+'_amplitude').attr('value');
+        	var offset = $('#'+div+'_offset').attr('value');
+        	var update_freq = $('#'+div+'_updatefreq').attr('value'); 
+        	alternate(div,wave_type,frequency,amplitude,offset,update_freq,value);
+		});
+    };
 };
 
-//
-//$('#alternator').change(function(){
-// 	console.log("desiring alternating!");
-// 	socket.emit('alternate state', $(this).val());
-// });
+var obj = [];
+var id_var = 0;
+function alternate(div_id,wave_type,frequency,amplitude,offset,update_freq,state){
+	var trim_index = Number(div_id.indexOf("_autopilot_holder"));
+	var label_id = String(div_id.substring(0,trim_index)+'_slider');
+	var eyeddd = String(wave_type+'_'+div_id)
+	if ( state == "yes" ){
+		switch(wave_type){
+			case "default": // Alternate as default wave
+				obj[eyeddd] = setInterval(function(){sin(label_id,div_id,frequency,amplitude,offset)}, Number(update_freq));
+				break;
+			case "sin": // Alternate as sin wave
+				obj[eyeddd] = setInterval(function(){sin(label_id,div_id,frequency,amplitude,offset)}, Number(update_freq));
+				break;
+			case "square": // Alternate as square wave
+				obj[eyeddd] = setInterval(function(){sin(label_id,div_id,frequency,amplitude,offset)}, Number(update_freq));
+				break;
+			case "triangle": // Alternate as triangle wave
+				// triangle();
+				break;
+			case "sawtooth": // Alternate as sawtooth wave
+				// sawtooth();
+				break;
+		}
+	} else if ( state == "no" ) {
+		// console.log("The no toggle for " + label_id + " has just been activated");
+		// console.log(Object.obj[0]);
+		console.log(obj);
+		document.clearInterval(obj[eyeddd]);
+		// window.clearInterval(1)
+	}
+	// For sin waves
+	function sin(label_id,div_id,frequency,amplitude,offset){
+		console.log("AYYYYYE COMMIT SOME SIN WITH THE " + label_id + " SLIDER!!!!");
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

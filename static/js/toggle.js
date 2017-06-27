@@ -21,8 +21,8 @@ function Toggle(div_id,title,names,unique,socket=null){
     if (socket != null){
         socket.on("update_"+unique,function(va){console.log("hit");if (built){$('#'+div_id+unique+"toggle").val(va).slider('refresh');}});
         $('#'+div_id+unique+"toggle").on('change',function(){
-            socket.emit('reporting', {'unique':unique, 'data':$(this).val()});
-            console.log('reporting', {'unique':unique, 'data':$(this).val()});
+            socket.emit('reporting_'+unique, {'unique':unique, 'div': div_id, 'data':$(this).val()});
+            console.log('reporting_'+unique, {'unique':unique, 'div': div_id, 'data':$(this).val()});
         });
     };
 };
