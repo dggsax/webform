@@ -157,28 +157,27 @@ function build_slider_autopilot(div_id){
     };
 };
 
-var obj = [];
-var id_var = 0;
+// Handles the autopilot math and function intervals
 function alternate(div_id,wave_type,frequency,amplitude,offset,update_freq,state){
 	var trim_index = Number(div_id.indexOf("_autopilot_holder"));
 	var label_id = String(div_id.substring(0,trim_index)+'_slider');
 	var eyeddd = String(wave_type+'_'+div_id)
 	if ( state == "yes" ){
 		switch(wave_type){
-			case "default": // Alternate as default wave
-				obj[eyeddd] = setInterval(function(){sin(label_id,div_id,frequency,amplitude,offset)}, Number(update_freq));
+			case "default": // Alternate at standard rate
+				setInterval(function(){standard(label_id,div_id,frequency,amplitude,offset)}, Number(update_freq));
 				break;
 			case "sin": // Alternate as sin wave
-				obj[eyeddd] = setInterval(function(){sin(label_id,div_id,frequency,amplitude,offset)}, Number(update_freq));
+				setInterval(function(){sin(label_id,div_id,frequency,amplitude,offset)}, Number(update_freq));
 				break;
 			case "square": // Alternate as square wave
-				obj[eyeddd] = setInterval(function(){sin(label_id,div_id,frequency,amplitude,offset)}, Number(update_freq));
+				setInterval(function(){square(label_id,div_id,frequency,amplitude,offset)}, Number(update_freq));
 				break;
 			case "triangle": // Alternate as triangle wave
-				// triangle();
+				setInterval(function(){triangle(label_id,div_id,frequency,amplitude,offset)}, Number(update_freq));
 				break;
 			case "sawtooth": // Alternate as sawtooth wave
-				// sawtooth();
+				setInterval(function(){sawtooth(label_id,div_id,frequency,amplitude,offset)}, Number(update_freq));
 				break;
 		}
 	} else if ( state == "no" ) {
@@ -188,13 +187,30 @@ function alternate(div_id,wave_type,frequency,amplitude,offset,update_freq,state
 		document.clearInterval(obj[eyeddd]);
 		// window.clearInterval(1)
 	}
-	// For sin waves
-	function sin(label_id,div_id,frequency,amplitude,offset){
+    // For standard alternation
+	function standard(label_id,div_id,frequency,amplitude,offset){
 		console.log("AYYYYYE COMMIT SOME SIN WITH THE " + label_id + " SLIDER!!!!");
-	}
-}
-
-
+    }
+    // For sin waves
+	function sin(label_id,div_id,frequency,amplitude,offset 
+		console.log("AYYYYYE COMMIT SOME SIN WITH THE " + label_id + " SLIDER!!!!");
+    }
+        
+    // For sin waves
+	function square(label_id,div_id,frequency,amplitude,offset){
+		console.log("AYYYYYE COMMIT SOME SIN WITH THE " + label_id + " SLIDER!!!!");
+    }
+    // For triangle waves
+	function triangle(label_id,div_id,frequency,amplitude,offset){
+		console.log("AYYYYYE COMMIT SOME SIN WITH THE " + label_id + " SLIDER!!!!");
+    }
+    // For sawtooth waves
+	function sawtooth(label_id,div_id,frequency,amplitude,offset){
+		console.log("AYYYYYE COMMIT SOME SIN WITH THE " + label_id + " SLIDER!!!!");
+    }
+}   
+    
+    
 
 
 
