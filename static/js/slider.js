@@ -1,4 +1,4 @@
-//////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                          //
 //    Slider handler                                                                        //
 //                                                                                          //
@@ -15,7 +15,6 @@
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 // Define to socket
-
 var socket = io('http://localhost:3000');
 
 // Function that generates sliders and stores them into an array
@@ -28,13 +27,14 @@ function slider_generate(name,min,max,resolution){
 	var slider = document.createElement("div");
 	$(slider).addClass("ui-slider slider-item"); // slider as slider item
 	$(slider).append('<input type="number" data-type="range" name="'+name // create the name
-		+'" id="'+name+"_slider" // create the id
+		+'" id="'+name+"_slider_input" // create the id
 		+'" value="0" min="'+min // define the min
 		+'" max="'+max // define the max
 		+'" step='+resolution // define the resolution (step)
 		+' class="_slider">'); // finish specifying everything...
 	var animated_slider = document.createElement("div");
 	$(animated_slider).attr("role","application");
+	$(animated_slider).attr("id",name+"_slider");
 	$(animated_slider).addClass("ui-slider-track ui-shadow-inset ui-bar-inherit ui-corner-all");
 	var slider_dial = document.createElement("a");
 	$(slider_dial).addClass("ui-slider-handle ui-btn ui-shadow");
@@ -53,7 +53,6 @@ function slider_generate(name,min,max,resolution){
 	$(newb).append(slider);
 	$(newb).append('<i class="fa fa-cog fa-2x slider-item slider-settings" aria-hidden="true" id="' + name + '"></i>')
 	$(newb).append('<div id="'+ name +'_autopilot"></div>')
-	// $(container).append(newb);
 	sliders.push({'name': name, 'obj':newb});
 };
 
@@ -145,58 +144,77 @@ function build_slider_autopilot(div_id){
 		$('.triangle').show();
 	}
 
-	if (socket != null){
-        socket.on("autopilot_1069",function(div,value){
-        	var wave_type = $('#' + div + ' > select[name=waves] > option:selected').val();
-        	var frequency = $('#'+div+'_frequency').attr('value');
-        	var amplitude = $('#'+div+'_amplitude').attr('value');
-        	var offset = $('#'+div+'_offset').attr('value');
-        	var update_freq = $('#'+div+'_updatefreq').attr('value'); 
-        	alternate(div,wave_type,frequency,amplitude,offset,update_freq,value);
+    var thing = new alternate(div_id); 
+    if (socket != null){
+        socket.on("autopilot_1069",function(div,command){
+            thing.update(div,command);
 		});
     };
 };
-
-// Handles the autopilot math and function intervals
-function alternate(div_id,wave_type,frequency,amplitude,offset,update_freq,state){
-	var trim_index = Number(div_id.indexOf("_autopilot_holder"));
-	var label_id = String(div_id.substring(0,trim_index)+'_slider');
-	var eyeddd = String(wave_type+'_'+div_id)
-	if ( state == "yes" ){
-		switch(wave_type){
-			case "default": // Alternate at standard rate
-				setInterval(function(){standard(label_id,div_id,frequency,amplitude,offset)}, Number(update_freq));
-				break;
-			case "sin": // Alternate as sin wave
-				setInterval(function(){sin(label_id,div_id,frequency,amplitude,offset)}, Number(update_freq));
-				break;
-			case "square": // Alternate as square wave
-				setInterval(function(){square(label_id,div_id,frequency,amplitude,offset)}, Number(update_freq));
-				break;
-			case "triangle": // Alternate as triangle wave
-				setInterval(function(){triangle(label_id,div_id,frequency,amplitude,offset)}, Number(update_freq));
-				break;
-			case "sawtooth": // Alternate as sawtooth wave
-				setInterval(function(){sawtooth(label_id,div_id,frequency,amplitude,offset)}, Number(update_freq));
-				break;
-		}
-	} else if ( state == "no" ) {
-		// console.log("The no toggle for " + label_id + " has just been activated");
-		// console.log(Object.obj[0]);
-		console.log(obj);
-		document.clearInterval(obj[eyeddd]);
-		// window.clearInterval(1)
-	}
+var intervals = [];
+// Handles the alternators.
+function alternate(div_id){
+    // Stuff
+    var trim_index = Number(div_id.indexOf("_autopilot_holder"));
+	var label_id = String(div_id+'_slider_input'); // Unique ID for the slider value that is being updated
+	var slider_id = String(div_id+'_slider')
+    var time = new Date();
+    time.getTime();
+    // Do the stuff with the stuff.
+    this.update = function(div_id,command){
+        // Define values!!!!!!!!!!!!!!!!!
+        var wave_type = $( '#'  + div_id + ' > select[name=waves] > option:selected' ).val(); // Wave type for toggled alternator
+        var frequency = $( '#' + div_id + '_frequency' ).attr( 'value' ); // Frequency for toggled alternator
+        var amplitude = $( '#' + div_id + '_amplitude' ).attr( 'value' ); // Amplitude for toggled alternator
+        var offset = $( '#'+ div_id +'_offset' ).attr( 'value' ); // Offset for toggled alternator
+        var update_freq = $( '#' + div_id + '_updatefreq' ).attr( 'value' ); // Update Frequency for toggled alternator
+        // Determines which wave type the alternator object will be using
+    	if ( command == "yes" ){
+    		switch(wave_type){
+    			case "default": // Alternate at standard rate
+    				var intervalId = setInterval(function(){standard(label_id,div_id,frequency,amplitude,offset)}, Number(update_freq));
+    				console.log(intervalId);
+    				intervals[div_id] = intervalId;
+    				break;
+    			case "sin": // Alternate as sin wave
+    				// var runner = setInterval(function(){sin(label_id,div_id,frequency,amplitude,offset,time)}, Number(update_freq));
+    				sin(label_id,div_id,frequency,amplitude,offset);
+    				break;
+    			case "square": // Alternate as square wave
+    				var runner = setInterval(function(){square(label_id,div_id,frequency,amplitude,offset)}, Number(update_freq));
+    				break;
+    			case "triangle": // Alternate as triangle wave
+    				var runner = setInterval(function(){triangle(label_id,div_id,frequency,amplitude,offset)}, Number(update_freq));
+    				break;
+    			case "sawtooth": // Alternate as sawtooth wave
+    				var runner = setInterval(function(){sawtooth(label_id,div_id,frequency,amplitude,offset)}, Number(update_freq));
+    				break;
+    			break;
+    		}
+    	} else if ( command == "no" ) {
+    		console.log(intervals[div_id]-1);
+    		console.log(intervals[div_id]);
+    		clearInterval(intervals[div_id]-1);
+    		clearInterval(intervals[div_id]);
+    	}
+    }
     // For standard alternation
-	function standard(label_id,div_id,frequency,amplitude,offset){
-		console.log("AYYYYYE COMMIT SOME SIN WITH THE " + label_id + " SLIDER!!!!");
+	function standard(label_id,div_id){
+        //var updated_val = amplitude * Math.sin(2*Math.pi*(frequency)*time+offset);
+        //$(label_id).attr("value",updated_val);
+        console.log("Aye famalam new default alternation *dabs viciously*");
     }
     // For sin waves
-	function sin(label_id,div_id,frequency,amplitude,offset 
-		console.log("AYYYYYE COMMIT SOME SIN WITH THE " + label_id + " SLIDER!!!!");
+	function sin(label_id,div_id,frequency,amplitude,offset){
+        // var omega = 2*(Math.PI)*Number(frequency);
+        // var updated_val = Number(amplitude) * toDegrees(Math.sin(omega*time.getTime()+Number(offset)));
+        // $( '#' + label_id ).change(function() {
+        var temp_val = 69;
+        // console.log(updated_val);
+        $( '#' + label_id ).attr( 'value' , temp_val );
+    	$( '#' + label_id ).children().trigger( 'click' );
     }
-        
-    // For sin waves
+    // For square  waves
 	function square(label_id,div_id,frequency,amplitude,offset){
 		console.log("AYYYYYE COMMIT SOME SIN WITH THE " + label_id + " SLIDER!!!!");
     }
@@ -208,24 +226,7 @@ function alternate(div_id,wave_type,frequency,amplitude,offset,update_freq,state
 	function sawtooth(label_id,div_id,frequency,amplitude,offset){
 		console.log("AYYYYYE COMMIT SOME SIN WITH THE " + label_id + " SLIDER!!!!");
     }
+    function toDegrees (angle) {
+      return angle * (180 / Math.PI);
+    }
 }   
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

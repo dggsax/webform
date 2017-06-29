@@ -1,4 +1,3 @@
-
 #Copyright (c) 2017 Joseph D. Steinmeyer (jodalyst)
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #  of this software and associated documentation files (the "Software"), to deal 
@@ -118,7 +117,3 @@ def action():
 
 if __name__ == '__main__':
     socketio.run(app, port=3000, debug=True)
-
-
-
-    

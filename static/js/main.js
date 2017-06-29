@@ -1,3 +1,11 @@
+//////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                          //
+//    Main Javascript File aka "Daddy"                                                      //
+//                                                                                          //
+//       Job: Everything                                                                    //
+//                                                                                          //
+//////////////////////////////////////////////////////////////////////////////////////////////
+
 var PLOT_WIDTH = 300;
 var PLOT_HEIGHT = 175;
 var HEADROOM_PRESENT = false;
@@ -42,6 +50,13 @@ $(document).on("change","select",function(){
   .attr("selected", true).siblings()
   .removeAttr("selected")
 });
+
+$('._slider').change(function () {
+    debugger;
+    console.log("litty titty");
+    $('.ui-slider-track').val(50).slider("refresh");
+});
+
 
 /////////////////////END OF AUTOPILOT/////////////////////
 
@@ -281,7 +296,11 @@ $(document).on('pageinit', function() {
         }
         parent.update();
     });
-
+    $('._slider').change(function () {
+        debugger;
+        console.log("litty titty");
+        $('.ui-slider-track').val(50).slider("refresh");
+    });
     
 });
 
