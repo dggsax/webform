@@ -11,7 +11,6 @@
     }
     .line {
         fill: none;
-        stroke: #F00;
         stroke-width: 1.5px;
     }
     .axis path,
@@ -85,7 +84,16 @@
 .scaler:focus{
     outline: 0;
 }
-.button_container{
+
+.v_button_container{
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+/*.v_button_container{
     display: -ms-flexbox;
     display: -webkit-flex;
     display: flex;
@@ -95,7 +103,7 @@
     display: inline-block;
     float: left;
     vertical-align:middle;
-}
+}*/
 
 /*.button_container{
     display: -ms-flexbox;
@@ -121,4 +129,34 @@
     align-items: center;
     justify-content: center;
     flex-direction: row;
+}
+
+.scalerp {
+    margin-left: 5px;
+    font-size: 10px;
+    padding:0px;
+    width: 20px;
+    background-color:#FFFFFF;
+    border-radius:10px;
+    border: 1px solid;
+    border-color: #dfdfdf;
+    -moz-box-shadow:    inset 0px -5px 10px #dfdfdf;
+    -webkit-box-shadow: inset 0px -5px 10px #dfdfdf;
+    box-shadow:         inset 0px -5px 10px #dfdfdf;
+}
+.scalerp:active{
+    background-color:#00ff1e;
+    -moz-box-shadow:    inset 0px -5px 10px #207e2b;
+    -webkit-box-shadow: inset 0px -5px 10px #207e2b;
+    box-shadow:         inset 0px -5px 10px #207e2b;
+}
+
+.scalerp:hover{
+    background-color:#dfdfdf;
+    -moz-box-shadow:    inset 0px -5px 10px #c5c5c5;
+    -webkit-box-shadow: inset 0px -5px 10px #c5c5c5;
+    box-shadow:         inset 0px -5px 10px #c5c5c5;
+}
+.scalerp:focus{
+    outline: 0;
 }
