@@ -16,15 +16,17 @@
 
 // Function that generates plots
 var plots = new Array();
-function plot_generate(name,min,max,datapoints){
+var color;
+function plot_generate(name,min,max,datapoints,graph_color){
+    color = graph_color;
     var newb = document.createElement("div"); //create div
     $(newb).addClass("sbs draggable timeplot-container"); //make it sbs, dragable, and a container
-    var newtitle = document.createElement("div"); //make inside div
-    $(newtitle).addClass("plot_title timeplot-item").html(name); //make it title
+    // var newtitle = document.createElement("div"); //make inside div
+    // $(newtitle).addClass("plot_title timeplot-item").html(name); //make it title
     var newplot = document.createElement("div"); //make another div
     $(newplot).addClass("chart timeplot-item"); //make it a chart
     $(newplot).prop('id',name); //call it appropriate name
-    $(newtitle).appendTo($(newb)); //add into sbs div
+    // $(newtitle).appendTo($(newb)); //add into sbs div
     $(newplot).appendTo($(newb)); //add into sbs div
     plots.push({'name':name,'plot':newb,'min':min, 'max':max, 'datapoints':datapoints});  //add entry to array.
 }
@@ -52,10 +54,13 @@ function build_plots(){
           console.log("max: " + max);
           console.log("min: " + min);
           console.log("type: " + type);
-          plot_handlers[name] = new Parallel_Plot(datapoints.length,datapoints,PLOT_WIDTH,PLOT_HEIGHT,max,min,"black",name,type);
+          console.log("datapoints: " + datapoints);
+          console.log("NOTICE ME SENPAI: " + color);
+          plot_handlers[name] = new Parallel_Plot(name,datapoints.length,datapoints,PLOT_WIDTH,PLOT_HEIGHT,max,min,String(color),plot_count + "_p",type);
         }
         else{
-        plot_handlers[name] = new LWChart(name,"red",[min,max],PLOT_HEIGHT,PLOT_WIDTH,datapoints);
+        // plot_handlers[name] = new LWChart(name,"red",[min,max],PLOT_HEIGHT,PLOT_WIDTH,datapoints);
+        plot_handlers[name] = new Time_Series(name,name,PLOT_WIDTH,PLOT_HEIGHT,datapoints,[min,max],1,"blue", plot_count, socket=null);
         }
     }
 };

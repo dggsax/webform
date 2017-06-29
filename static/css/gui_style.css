@@ -11,7 +11,6 @@
     }
     .line {
         fill: none;
-        stroke: #F00;
         stroke-width: 1.5px;
     }
     .axis path,
@@ -85,7 +84,16 @@
 .scaler:focus{
     outline: 0;
 }
-.button_container{
+
+.v_button_container{
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+/*.v_button_container{
     display: -ms-flexbox;
     display: -webkit-flex;
     display: flex;
@@ -95,7 +103,7 @@
     display: inline-block;
     float: left;
     vertical-align:middle;
-}
+}*/
 
 /*.button_container{
     display: -ms-flexbox;
