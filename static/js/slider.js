@@ -79,7 +79,7 @@ function build_slider_autopilot(div_id){
 	// Sets up everything......
 	var setup = function(){ // Build for that div the first time.
 		$('#' + autopilot).append('<div class="autopilot-container" id="'+autopilot+'_holder"></div>');
-		var alternator = Toggle(autopilot+'_holder',"alternate?",["no","yes"],'1069',socket);
+		var alternator = new Toggle(autopilot+'_holder',"alternate?",["no","yes"],'1069',socket);
 		$('#'+autopilot+'_holder').append(alternator);
 		$('#'+autopilot+'_holder').append('Wave Type:<select name="waves"'
 			+ 'style="background-color:#f6f6f6;display:table-cell;width:100%;">'
@@ -113,6 +113,7 @@ function build_slider_autopilot(div_id){
 			+'" class="autopilot_frequency"' // define the class
 			+ ' style="background-color:#f6f6f6;display:table-cell;width:100%">');	// define the resolution (step)=
 		// $('#'+autopilot+'_holder').append('Update Autopilot:<input type="submit" value="Submit" class="ui-btn">');
+		$('#'+autopilot).hide(); // Hides it so that you don't have to press the gear button twice to make stuff happen.
 	}
 	
 	// Checks if the autopilot fOR THAT SLIDER has already been built.
@@ -137,6 +138,7 @@ function build_slider_autopilot(div_id){
 	}
 	// Deals with making the thingy dissapear/appear
 	if ( $('#'+autopilot).is(':visible') ){
+		console.log("yoooo");
 		$('#'+autopilot).hide();
 		$('.triangle').hide();
 	} else {
@@ -145,17 +147,18 @@ function build_slider_autopilot(div_id){
 	}
 
     var thing = new alternate(div_id); 
-    if (socket != null){
+
+    if (socket != null){ // Whenver an on,off toggle for an alternator has been toggled, this gets triggered
         socket.on("autopilot_1069",function(div,command){
             thing.update(div,command);
-		});
+		}); 
     };
 };
+
+// Array to store intervals in for purposes of clearing later.
 var intervals = [];
 // Handles the alternators.
 function alternate(div_id){
-    // Stuff
-    var trim_index = Number(div_id.indexOf("_autopilot_holder"));
 	var label_id = String(div_id+'_slider_input'); // Unique ID for the slider value that is being updated
 	var slider_id = String(div_id+'_slider')
     var time = new Date();
@@ -172,60 +175,60 @@ function alternate(div_id){
     	if ( command == "yes" ){
     		switch(wave_type){
     			case "default": // Alternate at standard rate
-    				var intervalId = setInterval(function(){standard(label_id,div_id,frequency,amplitude,offset)}, Number(update_freq));
-    				console.log(intervalId);
+    				var intervalId = setInterval(function(){standard(label_id,div_id)}, Number(update_freq));
+    				console.log("hi");
     				intervals[div_id] = intervalId;
     				break;
     			case "sin": // Alternate as sin wave
-    				// var runner = setInterval(function(){sin(label_id,div_id,frequency,amplitude,offset,time)}, Number(update_freq));
-    				sin(label_id,div_id,frequency,amplitude,offset);
+    				var intervalId = setInterval(function(){sin(label_id,div_id,frequency,amplitude,offset)}, Number(update_freq));
+    				intervals[div_id] = intervalId;
     				break;
     			case "square": // Alternate as square wave
-    				var runner = setInterval(function(){square(label_id,div_id,frequency,amplitude,offset)}, Number(update_freq));
+    				var intervalId = setInterval(function(){square(label_id,div_id,frequency,amplitude,offset)}, Number(update_freq));
+    				intervals[div_id] = intervalId;
     				break;
     			case "triangle": // Alternate as triangle wave
-    				var runner = setInterval(function(){triangle(label_id,div_id,frequency,amplitude,offset)}, Number(update_freq));
+    				var intervalId = setInterval(function(){triangle(label_id,div_id,frequency,amplitude,offset)}, Number(update_freq));
+    				intervals[div_id] = intervalId;
     				break;
     			case "sawtooth": // Alternate as sawtooth wave
-    				var runner = setInterval(function(){sawtooth(label_id,div_id,frequency,amplitude,offset)}, Number(update_freq));
+    				var intervalId = setInterval(function(){sawtooth(label_id,div_id,frequency,amplitude,offset)}, Number(update_freq));
+    				intervals[div_id] = intervalId;
     				break;
-    			break;
     		}
     	} else if ( command == "no" ) {
-    		console.log(intervals[div_id]-1);
-    		console.log(intervals[div_id]);
-    		clearInterval(intervals[div_id]-1);
     		clearInterval(intervals[div_id]);
     	}
     }
     // For standard alternation
-	function standard(label_id,div_id){
-        //var updated_val = amplitude * Math.sin(2*Math.pi*(frequency)*time+offset);
-        //$(label_id).attr("value",updated_val);
-        console.log("Aye famalam new default alternation *dabs viciously*");
+	function standard(label_id,div_id){ // Just alterantes the value by changing the sign
+        var updated_val = - Number($( '#' + label_id ).val());
+        $( '#' + label_id ).val( updated_val );
     }
     // For sin waves
 	function sin(label_id,div_id,frequency,amplitude,offset){
-        // var omega = 2*(Math.PI)*Number(frequency);
-        // var updated_val = Number(amplitude) * toDegrees(Math.sin(omega*time.getTime()+Number(offset)));
-        // $( '#' + label_id ).change(function() {
-        var temp_val = 69;
-        // console.log(updated_val);
-        $( '#' + label_id ).attr( 'value' , temp_val );
-    	$( '#' + label_id ).children().trigger( 'click' );
+        var updated_val = Number(amplitude) * toDegrees(Math.sin(2*(Math.PI)*Number(frequency)*Date.now()+Number(offset)));
+        $( '#' + label_id ).val( updated_val );
     }
     // For square  waves
 	function square(label_id,div_id,frequency,amplitude,offset){
-		console.log("AYYYYYE COMMIT SOME SIN WITH THE " + label_id + " SLIDER!!!!");
+		///////Erm I'm not sure how square wave math works so///////
+		//return function (t) {
+		//  return square(440);
+		//  function sin (x) { return Math.sin(2 * Math.PI * t * x) }
+		//  function square (x) { return sin(x) > 0 ? 1 : -1 }
+		//};
+		///////////////////////////////////////////////////////////
     }
     // For triangle waves
 	function triangle(label_id,div_id,frequency,amplitude,offset){
-		console.log("AYYYYYE COMMIT SOME SIN WITH THE " + label_id + " SLIDER!!!!");
+		// math for this here https://goo.gl/rjTK3Z
     }
     // For sawtooth waves
 	function sawtooth(label_id,div_id,frequency,amplitude,offset){
-		console.log("AYYYYYE COMMIT SOME SIN WITH THE " + label_id + " SLIDER!!!!");
+		// math for this here https://goo.gl/rjTK3Z
     }
+    // Necessary for wave math since Math.sin() returns a value in radians.
     function toDegrees (angle) {
       return angle * (180 / Math.PI);
     }
