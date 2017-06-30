@@ -51,13 +51,6 @@ $(document).on("change","select",function(){
   .removeAttr("selected")
 });
 
-$('._slider').change(function () {
-    debugger;
-    console.log("litty titty");
-    $('.ui-slider-track').val(50).slider("refresh");
-});
-
-
 /////////////////////END OF AUTOPILOT/////////////////////
 
 // (document).on('keydown', 'input.large', function(ev) {
@@ -230,13 +223,6 @@ $(document).on('pageinit', function() {
         var unique = 696969;
         var val = $(this).children().children().eq(1).val();
         socket.emit('toggle_update_'+unique,val)
-    });
- 
-    $('._slider').change(function(){
-        var message = 'change';
-        console.log(message);
-        console.log($(this).attr('id'),$(this).val());
-        socket.emit(message,{id: $(this).attr('id'), val:$(this).val()});
     });
 
     /////////////////////////////
