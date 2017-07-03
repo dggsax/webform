@@ -62,7 +62,6 @@ $(document).on('pageinit', function() {
 
     //Connect/Disconnect to Serial Port
     $('#connect').click(function(){
-        console.log("esta lit");
         hootenanny();
         if($(this).text() != 'Connected (Click to Disconnect)'){
             socket.emit('serial connect request',{state: ALREADY_BUILT});
@@ -72,6 +71,9 @@ $(document).on('pageinit', function() {
         }else{
             socket.emit('serial disconnect request');
         }
+
+
+        //stepping the graphs, currently feeds them mouse coordinates
         var mouseX, mouseY;
         $(document).mousemove(function(e){
           mouseX = e.pageX;
@@ -87,7 +89,12 @@ $(document).on('pageinit', function() {
               var name = plots[i]['name'];
               switch(plot_handlers[name].constructor.name){
                 case "Time_Series":
-                  plot_handlers[name].step([mouseX]);
+                  if(i%2 == 0){
+                    plot_handlers[name].step([mouseX]);
+                  }
+                  else{
+                    plot_handlers[name].step([mouseY]);
+                  }
                   break;
                 case "Parallel_Plot":
                   plot_handlers[name].step_p([mouseX, mouseY,300]);
@@ -155,7 +162,7 @@ $(document).on('pageinit', function() {
         plot_handlers = new Array();
         //-------
         // msg = msg+''; //convert to string...stupid I know.
-      msg = "&C&S~Gonzo~commname~0~69~5&A~Gonzo~2&S~Joe~commname~0~69~5&S~Wei~commname~0~100~1&S~Jesus~commname~3~5~1&S~Wow~commname~0~3~4&T~Hehe~U1~1~5&T~Joee~F4~0~100&T~Everything~U1~0~10&T~Help~U1~0~255&T~Wowe~S4~2~5&P~Something~U1~0~1000~hi,there,wassup~line~blue&"
+      msg = "&C&S~Gonzo~commname~0~69~5&A~Gonzo~2&S~Joe~commname~0~69~5&S~Wei~commname~0~100~1&S~Jesus~commname~3~5~1&S~Wow~commname~0~3~4&T~Hehe~U1~1~5~blue&T~Joe~F4~0~100~red&T~Everything~U1~0~10~yellow&T~Help~U1~0~255~green&T~Wow~S4~2~5~black&P~Something~U1~0~10000~x,y,static~line~blue&"
         // msg = "&A~DesiredAngV~5&C&S~Direct~O~0~5.0~0.1&S~DesiredAngV~A~-1~1~0.1&T~AngleV~F4~0~2.5&T~BackEMF~F4~0~5&T~MCmd~F4~0~5&H~4&"
         var sets = msg.split("&");
         var duration = 100; //default
@@ -165,6 +172,28 @@ $(document).on('pageinit', function() {
                 duration = parseFloat(test[1]);
             }
         }
+
+        var joystick = new VirtualJoystick({
+				container	: document.getElementById('main_area'),
+				mouseSupport	: true,
+			});
+        joystick.addEventListener('touchStart', function(){
+        console.log('down')
+      })
+      joystick.addEventListener('touchEnd', function(){
+        console.log('up')
+      })
+      d3.select("#main_area").append("div").attr("id", "result");
+      setInterval(function(){
+				var outputEl	= document.getElementById('result');
+				outputEl.innerHTML	= '<b>Result:</b> '
+					+ ' dx:'+joystick.deltaX()
+					+ ' dy:'+joystick.deltaY()
+					+ (joystick.right()	? ' right'	: '')
+					+ (joystick.up()	? ' up'		: '')
+					+ (joystick.left()	? ' left'	: '')
+					+ (joystick.down()	? ' down' 	: '')
+			}, 1/30 * 1000);
 
         for (var i = 0;  i < sets.length; i++){
             console.log(sets[i]);
@@ -189,8 +218,9 @@ $(document).on('pageinit', function() {
                     var name = test[1];
                     var lo = test[3];
                     var hi = test[4];
-                    var names = test[5];
-                    plot_generate(name,parseFloat(lo),parseFloat(hi),duration);
+                    var color = test[5];
+                    var type = test[0];
+                    plot_generate(name,parseFloat(lo),parseFloat(hi),duration,color,type);
                     break;
                 case "H":
                     HEADROOM_PRESENT = true;
@@ -202,14 +232,12 @@ $(document).on('pageinit', function() {
                     var testing = test[5].split(",");
                     var label_names = [];
                     var color = test[7];
-                    console.log("color: " + color);
+                    var type = test[0];
                     for(z=0; z < testing.length;z++){
                       label_names[z] = testing[z];
                     }
-
-                    label_names[testing.length] = test[6];
-                    console.log("sending: " + label_names);
-                    plot_generate(name,parseFloat(lo),parseFloat(hi),label_names,color);
+                    graph_type = test[6];
+                    plot_generate(name,parseFloat(lo),parseFloat(hi),label_names,color,type,graph_type);
                     break;
 
             }
@@ -368,165 +396,3 @@ $(document).on('pageinit', function() {
 //         this.setup();
 //     };
 // };
-
-function Time_Series(div_id,title,width,height,x_range,y_range,num_traces,colors, unique, socket=null){
-    var div_id = div_id;
-    var title = title;
-    var unique = unique;
-    var socket = socket;
-    var colors = colors;
-    console.log("THIS ONE WILL BE " + colors)
-    var y_range_orig = y_range.slice(0); //used for reset mechanisms.
-    var vals_orig = x_range;
-    var y_range = y_range.slice(0);
-    var num_traces = num_traces;
-    var vals = x_range;
-    var total_height = height;
-    var xchange = false;
-    var margin = {top: 20, right: 30, bottom: 30, left: 40};
-    var data = [];
-    for (var i = 0; i<num_traces; i++){
-        data.push(d3.range(vals).map(function() { return 0; }));
-    }
-    var height = total_height - margin.top - margin.bottom;
-    var total_width = width;
-    var width = total_width - margin.right - margin.left;
-    var overall = $("#"+div_id).append("<div id=\""+div_id+unique+"_overall\">");
-    var title_div = $("#"+div_id+unique+"_overall").append("<div class=\"plot_title\" id=\""+div_id+unique+"_title\">"+title+"</div>");
-    var top_row = $("#"+div_id+unique+"_overall").append("<div class=\"chart\" id=\""+div_id+unique+"top\">");
-    var bottom_row = $("#"+div_id+unique+"_overall").append("<div class=\"chart\" id=\""+div_id+unique+"bot\">");
-    var line;
-    var traces;
-
-
-    var x_axis;
-    var y_axis;
-    var x;
-    var y;
-    var x_grid;
-    var y_grid;
-    var chart;
-    var chartBody;
-
-    var draw_plot_region = function(){
-        console.log("drawing plot for "+unique);
-        if (xchange){
-            xchange = false;
-            if (vals> data[0].length){//increasing amount
-                for (var i = 0; i<num_traces;i++){
-                    var tempdata = d3.range(vals-data[i].length).map(function() { return 0; });
-                    data[i] = tempdata.concat(data[i]);
-                }
-            }else if (vals< data[0].length){
-                var to_remove = data[0].length-vals;
-                for(var i =0; i<num_traces; i++){
-                    data[i] = data[i].slice(-vals);
-                }
-            }
-        }
-        chart = d3.select("#"+div_id+unique+"top").append("svg")
-        .attr("id","svg_for_"+div_id+unique).attr("width",total_width).attr("height",total_height).attr('style',"display:inline-block;").attr("class", "gsc");
-        y = d3.scale.linear().domain([y_range[0],y_range[1]]).range([height,0]);
-        x = d3.scale.linear().domain([0,vals-1]).range([0,width]);
-        x_axis = d3.svg.axis().scale(x).orient("bottom").ticks(11);
-        y_axis = d3.svg.axis().scale(y).orient("left").ticks(11);
-        x_grid = d3.svg.axis().scale(x).orient("bottom").ticks(20).tickSize(-height, 0, 0).tickFormat("");
-        y_grid = d3.svg.axis().scale(y).orient("left").ticks(11).tickSize(-width, 0, 0).tickFormat("");
-        chart.append("g").attr("transform","translate("+margin.left +","+ margin.top + ")");
-        chart.append("g").attr("class", "grid").attr("transform","translate("+margin.left+","+(height+margin.top)+")").call(x_grid);
-        chart.append("g").attr("class", "grid").attr("transform","translate("+margin.left+","+margin.top+")").call(y_grid);
-        clippy = chart.append("defs").append("svg:clipPath").attr("id",div_id+unique+"clip").append("svg:rect").attr("id",div_id+unique+"clipRect").attr("x",margin.left).attr("y",margin.top).attr("width",width).attr("height",height);
-        chartBody = chart.append("g").attr("clip-path","url(#"+div_id+unique+"clip"+")");
-        line = new d3.svg.line().x(function(d, i) { return x(i)+margin.left; }.bind(this)).y(function(d, i) { return y(d)+margin.top; }.bind(this));
-        traces = [];
-        console.log(line);
-        for (var i=0; i<num_traces; i++){
-            traces.push(chartBody.append("path").datum(data[i]).attr("class","line").attr("d",line).attr("stroke",colors));
-        }
-        chart.append("g").attr("class", "x axis").attr("transform","translate("+margin.left+","+(height+margin.top)+")").call(x_axis).selectAll("text")
-        .attr("y", -5).attr("x", 20).attr("transform", "rotate(90)");
-        chart.append("g").attr("class", "y axis").attr("transform","translate("+margin.left+","+margin.top+")").call(y_axis);
-    };
-    draw_plot_region();
-    $("#"+div_id+unique+"top").prepend("<div class ='v_button_container' id = \""+div_id+unique+"BC2\" >");
-    $("#"+div_id+unique+"BC2").append("<button class='scaler' id=\""+div_id+unique+"VP\">Z+</button>");
-    $("#"+div_id+unique+"BC2").append("<button class='scaler' id=\""+div_id+unique+"VRS\">RS</button>");
-    $("#"+div_id+unique+"BC2").append("<button class='scaler' id=\""+div_id+unique+"VM\">Z-</button>");
-    $("#"+div_id+unique+"top").prepend("<div class ='v_button_container' id = \""+div_id+unique+"BC1\" >");
-    $("#"+div_id+unique+"BC1").append("<button class='scaler' id=\""+div_id+unique+"OI\">O+</button>");
-    $("#"+div_id+unique+"BC1").append("<button class='scaler' id=\""+div_id+unique+"OD\">O-</button>");
-    $("#"+div_id+unique+"bot").append("<div class ='h_button_container' id = \""+div_id+unique+"BC4\" >");
-    $("#"+div_id+unique+"BC4").append("<button class='scaler' id=\""+div_id+unique+"HM\">Z-</button>");
-    $("#"+div_id+unique+"BC4").append("<button class='scaler' id=\""+div_id+unique+"HRS\">RS</button>");
-    $("#"+div_id+unique+"BC4").append("<button class='scaler' id=\""+div_id+unique+"HP\">Z+</button>");
-    this.step = function(values){
-            //this.trace.attr("d",this.line).attr("transform",null).transition().duration(0).ease("linear").attr("transform","translate("+this.x(-1)+",0)");
-            for (var i=0; i<values.length; i++){
-                traces[i].attr("d",line).attr("transform",null);
-                data[i].push(values[i]);
-                data[i].shift();
-            }
-    };
-    var steppo = this.step;
-    var update_scales = function(){
-        d3.select("#svg_for_"+div_id+unique).remove();
-        draw_plot_region();
-    };
-    if (socket != null){
-        socket.on("update_"+unique,function(values){steppo(values);});
-    }
-    $("#"+div_id).on("click",function(event){
-        console.log(event.target.id);
-        switch(event.target.id){
-            case div_id+unique+"VM":
-                var parent_range = y_range[1] - y_range[0];
-                var parent_mid = (y_range[1] - y_range[0])/2 + y_range[0];
-                y_range[1] = (y_range[1] - parent_mid)*2+parent_mid;
-                y_range[0] = parent_mid-(parent_mid - y_range[0])*2;
-                update_scales();
-                break;
-            case div_id+unique+"VP":
-                var parent_range = y_range[1] - y_range[0];
-                var parent_mid = (y_range[1] - y_range[0])/2 + y_range[0];
-                y_range[1] = (y_range[1] - parent_mid)*0.5+parent_mid;
-                y_range[0] = parent_mid-(parent_mid - y_range[0])*0.5;
-                update_scales();
-                break;
-            case div_id+unique+"VRS":
-                y_range =y_range_orig.slice(0);
-                update_scales();
-                break;
-            case div_id+unique+"HM":
-                if (vals >4){
-                    vals = Math.round(vals/2);
-                }
-                xchange = true;
-                update_scales();
-                break;
-            case div_id+unique+"HP":
-                vals = vals*2;
-                xchange = true;
-                update_scales();
-                break;
-            case div_id+unique+"HRS":
-                vals =vals_orig;
-                xchange = true;
-                update_scales();
-                break;
-            case div_id+unique+"OD":
-                var diff = y_range[1] - y_range[0];
-                var tp = diff*0.1;
-                y_range[1] = y_range[1]+tp;
-                y_range[0]=y_range[0]+tp;
-                update_scales();
-                break;
-            case div_id+unique+"OI":
-                var diff = y_range[1] - y_range[0];
-                var tp = diff*0.1;
-                y_range[1] = y_range[1]-tp;
-                y_range[0] = y_range[0]-tp;
-                update_scales();
-                break;
-        }
-    });
-};

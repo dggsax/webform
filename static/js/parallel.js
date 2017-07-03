@@ -140,12 +140,12 @@ function Parallel_Plot(div_id,num_values,labels,plot_width,plot_height,max_val,m
       // console.log(event.target.id);
       switch(event.target.id){
           case div_id+unique+"VM":
-              max_val = max_val*2;
+              max_val = max_val*1.5;
               update_scale();
               console.log("minus!");
               break;
           case  div_id+unique+"VP":
-              max_val = max_val/2;
+              max_val = max_val/1.5;
 
               update_scale();
               console.log("plus!");
@@ -174,7 +174,6 @@ function Parallel_Plot(div_id,num_values,labels,plot_width,plot_height,max_val,m
     }});
 
     function update_graph(){
-      console.log(yScale(5));
       //remove svg
       d3.select("#svg_for_p"+unique).remove();
       build_plot();
@@ -182,7 +181,6 @@ function Parallel_Plot(div_id,num_values,labels,plot_width,plot_height,max_val,m
       }
       var element = d3.select(".x.axis").node();
       var bottom_padding = element.getBoundingClientRect().height;
-    console.log("gonna add this " + bottom_padding);
 
   this.step_p = function(values){
     var newData = [];
