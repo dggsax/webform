@@ -173,27 +173,6 @@ $(document).on('pageinit', function() {
             }
         }
 
-        var joystick = new VirtualJoystick({
-				container	: document.getElementById('main_area'),
-				mouseSupport	: true,
-			});
-        joystick.addEventListener('touchStart', function(){
-        console.log('down')
-      })
-      joystick.addEventListener('touchEnd', function(){
-        console.log('up')
-      })
-      d3.select("#main_area").append("div").attr("id", "result");
-      setInterval(function(){
-				var outputEl	= document.getElementById('result');
-				outputEl.innerHTML	= '<b>Result:</b> '
-					+ ' dx:'+joystick.deltaX()
-					+ ' dy:'+joystick.deltaY()
-					+ (joystick.right()	? ' right'	: '')
-					+ (joystick.up()	? ' up'		: '')
-					+ (joystick.left()	? ' left'	: '')
-					+ (joystick.down()	? ' down' 	: '')
-			}, 1/30 * 1000);
 
         for (var i = 0;  i < sets.length; i++){
             console.log(sets[i]);
@@ -242,6 +221,7 @@ $(document).on('pageinit', function() {
 
             }
         }
+        
         build_sliders();
         build_plots();
         socket.emit('all set from gui');
