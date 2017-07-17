@@ -62,11 +62,15 @@ $(document).on('pageinit', function() {
 
     //Connect/Disconnect to Serial Port
     $('#connect').click(function(){
+        // $("#main_area").css("position","relative");
         hootenanny();
+        $(".container_graphs").shapeshift();
+        $("#container_sliders").shapeshift();
+
         if($(this).text() != 'Connected (Click to Disconnect)'){
             socket.emit('serial connect request',{state: ALREADY_BUILT});
-            $('#csv').val(0).slider('refresh');
-            $('#alternator').val(0).slider('refresh');
+            $('#csv').val(0);
+            $('#alternator').val(0);
             isActive = true;
         }else{
             socket.emit('serial disconnect request');
@@ -118,7 +122,7 @@ $(document).on('pageinit', function() {
     });
     socket.on('state toggle', function(val){
         console.log("toggling");
-        $('#'+TOGGLE_PARAM).val(parseFloat(val)).slider('refresh');
+        $('#'+TOGGLE_PARAM).val(parseFloat(val));
     });
 
     $('#csv').change(function(){
@@ -157,6 +161,9 @@ $(document).on('pageinit', function() {
         var csv = false;
         //WIPE THE SLATE CLEAN:
         $("#main_area").empty(); //do it this way because jquery needs to be cleaned properly
+        var slider_container = d3.select("#main_area").append("div").attr("id","container_sliders");
+        var container = d3.select("#main_area").append("div").attr("class","container_graphs");
+
         sliders = new Array();
         plots = new Array();
         plot_handlers = new Array();
@@ -221,18 +228,12 @@ $(document).on('pageinit', function() {
 
             }
         }
-        
+
         build_sliders();
         build_plots();
         socket.emit('all set from gui');
         ALREADY_BUILT = true;
 
-        $( function() {
-            $( ".draggable" ).draggable({
-                containment: "#main_area",
-                snap: true
-            });
-        } );
     };
 
     ///////////////////////////
@@ -264,7 +265,7 @@ $(document).on('pageinit', function() {
     /////////////////////////////
 
     socket.on('setup slider', function(thing){
-        $("#"+thing[0]).val(parseFloat(thing[1])).slider("refresh");
+        $("#"+thing[0]).val(parseFloat(thing[1]));
     })
 
     socket.on('note', function(msg) {
@@ -318,61 +319,3 @@ $(document).on('pageinit', function() {
 
 
 });
-
-
-
-// function LWChart(div_id,color,y_range,height,width,vals){
-//     this.div_id = div_id;
-//     this.color = color;
-//     this.y_range_orig = y_range.slice(0); //used for reset mechanisms.
-//     this.y_range = y_range;
-//     this.vals = vals;
-//     this.margin = {top: 20, right: 30, bottom: 30, left: 40};
-//     this.data = d3.range(this.vals).map(function() { return 0; });
-//     this.height = height - this.margin.top - this.margin.bottom;
-//     this.width = width - this.margin.right - this.margin.left;
-//     this.setup = function(){
-//         this.chart = d3.select("#"+this.div_id).append("svg")
-//         .attr("id","svg_for_"+this.div_id).attr("width",width).attr("height",height).attr('style',"display:inline-block;").attr("class", "gsc");
-//         this.y = d3.scale.linear().domain([this.y_range[0],this.y_range[1]]).range([this.height,0]);
-//         this.x = d3.scale.linear().domain([0,this.vals-1]).range([0,this.width]);
-//         this.x_axis = d3.svg.axis().scale(this.x).orient("bottom").ticks(20);
-//         this.y_axis = d3.svg.axis().scale(this.y).orient("left").ticks(11);
-//         this.x_grid = d3.svg.axis().scale(this.x).orient("bottom").ticks(20).tickSize(-this.height, 0, 0).tickFormat("");
-//         this.y_grid = d3.svg.axis().scale(this.y).orient("left").ticks(11).tickSize(-this.width, 0, 0).tickFormat("");
-//         this.chart.append("g").attr("transform","translate("+this.margin.left +","+ this.margin.top + ")");
-//         this.chart.append("g").attr("class", "x axis")
-//         .attr("transform","translate("+this.margin.left+","+(this.height+this.margin.top)+")").call(this.x_axis);
-//         this.chart.append("g").attr("class", "y axis").attr("transform","translate("+this.margin.left+","+this.margin.top+")").call(this.y_axis);
-//         this.chart.append("g").attr("class", "grid")
-//         .attr("transform","translate("+this.margin.left+","+(this.height+this.margin.top)+")").call(this.x_grid);
-//         this.chart.append("g").attr("class", "grid").attr("transform","translate("+this.margin.left+","+this.margin.top+")").call(this.y_grid);
-//         this.line = d3.svg.line().x(function(d, i) { return this.x(i)+this.margin.left; }.bind(this)).
-//         y(function(d, i) { return this.y(d)+this.margin.top; }.bind(this));
-//         this.clip_id = "clipper_"+this.div_id;
-//         this.clipper = this.chart.append("clipPath").attr("id", this.clip_id)
-//         .append("rect").attr("x",this.margin.left).attr("y",this.margin.top)
-//         .attr("width",this.width).attr("height",this.height);
-//         this.trace = this.chart.append("g").append("path").datum(this.data).attr("class","line")
-//         .attr("d",this.line).attr("clip-path", "url(#"+this.clip_id+")");
-//         };
-//     this.setup();
-//     //console.log(this.div_id);
-//     $("#"+this.div_id).prepend("<div class ='button_container' id = \""+this.div_id+"BC2\" >");
-//     $("#"+this.div_id+"BC2").append("<button class='scaler' id=\""+this.div_id+"VP\">Z+</button><br>");
-//     $("#"+this.div_id+"BC2").append("<button class='scaler' id=\""+this.div_id+"RS\">RS</button><br>");
-//     $("#"+this.div_id+"BC2").append("<button class='scaler' id=\""+this.div_id+"VM\">Z-</button><br>");
-//     $("#"+this.div_id).prepend("<div class ='button_container' id = \""+this.div_id+"BC1\" >");
-//     $("#"+this.div_id+"BC1").append("<button class='scaler' id=\""+this.div_id+"OI\">O+</button><br>");
-//     $("#"+this.div_id+"BC1").append("<button class='scaler' id=\""+this.div_id+"OD\">O-</button><br>");
-//
-//     this.step = function(value){
-//             this.data.push(value);
-//             this.trace.attr("d",this.line).attr("transform",null).transition().duration(2).ease("linear").attr("transform","translate("+this.x(-1)+",0)");
-//             this.data.shift();
-//     };
-//     this.update = function(){
-//         d3.select("#svg_for_"+this.div_id).remove();
-//         this.setup();
-//     };
-// };

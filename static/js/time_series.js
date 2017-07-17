@@ -26,7 +26,6 @@ function Time_Series(div_id,title,width,height,x_range,y_range,num_traces,colors
     var line;
     var traces;
 
-
     var x_axis;
     var y_axis;
     var x;

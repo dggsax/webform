@@ -19,8 +19,6 @@ var plots = new Array();
 function plot_generate(name,min,max,datapoints,graph_color,type,l_g = "bar"){
     var newb = document.createElement("div"); //create div
     $(newb).addClass("sbs draggable timeplot-container"); //make it sbs, dragable, and a container
-    // var newtitle = document.createElement("div"); //make inside div
-    // $(newtitle).addClass("plot_title timeplot-item").html(name); //make it title
     var newplot = document.createElement("div"); //make another div
     $(newplot).addClass("chart timeplot-item"); //make it a chart
     $(newplot).prop('id',name+"_div"); //call it appropriate name
@@ -34,7 +32,7 @@ var plot_handlers = new Array();
 function build_plots(){
     var plot_count = 0;
     $.each(plots, function(index, value){
-      $(value['plot']).appendTo($("#main_area"));
+      $(value['plot']).appendTo($(".container_graphs"));
       plot_count += 1;
     });
 
@@ -48,7 +46,7 @@ function build_plots(){
         var type = plots[i]['type']//parallel or time series
         var g_type = plots[i]['graph_type']; //bar or line
         if(type == "P"){
-          plot_handlers[name] = new Parallel_Plot(name+"_div",datapoints.length,datapoints,PLOT_WIDTH,PLOT_HEIGHT,max,min,String(color),plot_count + "_p",g_type);
+          plot_handlers[name] = new Parallel_Plot(name+"_div",name,datapoints.length,datapoints,PLOT_WIDTH,PLOT_HEIGHT,max,min,String(color),plot_count + "_p",g_type);
         }
         else{
         // plot_handlers[name] = new LWChart(name,"red",[min,max],PLOT_HEIGHT,PLOT_WIDTH,datapoints);

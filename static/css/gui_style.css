@@ -160,3 +160,35 @@
 .scalerp:focus{
     outline: 0;
 }
+
+.container_graphs {
+  border: 1px dashed #CCC;
+  position: relative;
+  width:100%;
+}
+
+.container_graphs > div {
+
+  position: absolute;
+}
+
+.container_graphs > .ss-placeholder-child {
+  background: transparent;
+  border: 1px dashed blue;
+}
+
+#container_sliders {
+  border: 1px dashed #CCC;
+  position: relative;
+  width:100%;
+}
+
+#container_sliders > div {
+
+  position: absolute;
+}
+
+#container_sliders > .ss-placeholder-child {
+  background: transparent;
+  border: 1px dashed blue;
+}
