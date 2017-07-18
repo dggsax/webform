@@ -64,8 +64,8 @@ $(document).on('pageinit', function() {
     $('#connect').click(function(){
         // $("#main_area").css("position","relative");
         hootenanny();
-        $(".container_graphs").shapeshift();
-        $("#container_sliders").shapeshift();
+        $("#drag_container").shapeshift();
+        $("#drag_container").trigger("ss-destroy");
 
         if($(this).text() != 'Connected (Click to Disconnect)'){
             socket.emit('serial connect request',{state: ALREADY_BUILT});
@@ -161,7 +161,7 @@ $(document).on('pageinit', function() {
         var csv = false;
         //WIPE THE SLATE CLEAN:
         $("#main_area").empty(); //do it this way because jquery needs to be cleaned properly
-        var slider_container = d3.select("#main_area").append("div").attr("id","container_sliders");
+        var slider_container = d3.select("#main_area").append("div").attr("id","drag_container");
         var container = d3.select("#main_area").append("div").attr("class","container_graphs");
 
         sliders = new Array();
@@ -228,9 +228,11 @@ $(document).on('pageinit', function() {
 
             }
         }
-
-        build_sliders();
         build_plots();
+        build_sliders();
+        //makes sure that scaler buttons aren't renamed
+        $('*[class^="scaler"]').attr('class','scaler');
+
         socket.emit('all set from gui');
         ALREADY_BUILT = true;
 

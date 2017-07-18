@@ -13,7 +13,7 @@ function lockToggle(div_id,title,names,unique,socket=null){
         $("#"+div_id+unique+"_holder").append("<select name=\""+ div_id+unique+"toggler" +"\" id=\""+div_id+unique+"toggle"+"\" data-role=\"slider\"><option value=\""+names[0]+"\">"+names[0]+"</option><option value=\""+names[1]+"\">"+names[1]+" </option></select>");
         //$("#"+div_id+unique+"_holder").append('<label for="slider-1">Input slider:</label><input type="range" name="slider-1" id="slider-1" value="60" min="0" max="100" />');
         built = true;
-        
+
         $("#"+div_id+unique+"_holder").trigger("create");
         console.log("just enjanced");
         console.log("#"+div_id+unique+"toggle");
@@ -24,10 +24,10 @@ function lockToggle(div_id,title,names,unique,socket=null){
         $('#'+div_id+unique+"toggle").on('change',function(){
             socket.emit('reporting', {'unique':unique, 'data':$(this).val()});
             if ($(this).val() == "Locked"){
-                $('.draggable').draggable("disable");
+                $("#drag_container").trigger("ss-destroy");
                 console.log("all draggable things should be disabled");
             } else if ($(this).val() == "Unlocked"){
-                $('.draggable').draggable("enable");
+                $("#drag_container").shapeshift();
                 console.log("all draggable things should be enabled");
             }
         });

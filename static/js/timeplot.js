@@ -32,7 +32,7 @@ var plot_handlers = new Array();
 function build_plots(){
     var plot_count = 0;
     $.each(plots, function(index, value){
-      $(value['plot']).appendTo($(".container_graphs"));
+      $(value['plot']).appendTo($("#drag_container"));
       plot_count += 1;
     });
 

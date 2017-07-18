@@ -161,34 +161,18 @@
     outline: 0;
 }
 
-.container_graphs {
+#drag_container {
   border: 1px dashed #CCC;
   position: relative;
   width:100%;
 }
 
-.container_graphs > div {
+#drag_container > div {
 
   position: absolute;
 }
 
-.container_graphs > .ss-placeholder-child {
-  background: transparent;
-  border: 1px dashed blue;
-}
-
-#container_sliders {
-  border: 1px dashed #CCC;
-  position: relative;
-  width:100%;
-}
-
-#container_sliders > div {
-
-  position: absolute;
-}
-
-#container_sliders > .ss-placeholder-child {
+#drag_container > .ss-placeholder-child {
   background: transparent;
   border: 1px dashed blue;
 }

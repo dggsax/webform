@@ -62,7 +62,7 @@ function build_sliders(){
     var total_rows = Math.ceil(sliders.length/3);
     var slider_count = 0;
     for (var i = 0; i < total_rows; i++){
-      var slider_div = document.getElementById("container_sliders");
+      var slider_div = document.getElementById("drag_container");
       for (var j = 0; j<3; j++){
         if(slider_count < sliders.length){
           $(sliders[slider_count]['obj']).appendTo($(slider_div));
@@ -70,7 +70,7 @@ function build_sliders(){
           slider_count = slider_count+1;
         }
       }
-      $(slider_div).appendTo($("#container_sliders")).trigger("create");
+      $(slider_div).appendTo($("#drag_container")).trigger("create");
     }
 };
 
