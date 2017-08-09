@@ -89,7 +89,7 @@ div.slider-item {
 */
 
 .autopilot-container {
-    width: 250px;   
+    width: 250px;
     padding: 10px;
     border: 3px solid #333333;
     border-radius: 10px;
@@ -103,8 +103,8 @@ div.slider-item {
 *********************************
 */
 
-.draggable { 
-    padding: 0.5em; 
+.draggable {
+    padding: 0.5em;
 }
 
 .custom-size-toggle.ui-toggle {

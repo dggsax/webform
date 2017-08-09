@@ -160,3 +160,19 @@
 .scalerp:focus{
     outline: 0;
 }
+
+#drag_container {
+  border: 1px dashed #CCC;
+  position: relative;
+  width:100%;
+}
+
+#drag_container > div {
+
+  position: absolute;
+}
+
+#drag_container > .ss-placeholder-child {
+  background: transparent;
+  border: 1px dashed blue;
+}

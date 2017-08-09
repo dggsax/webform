@@ -15,14 +15,23 @@
     <script src="../static/js/socket.io.js"></script>
     <script src="../static/js/jquery.js"></script>
     <script src="../static/js/jquery-ui.js"></script>
+    <!-- jQuery.Shapeshift -->
+    <script src="../static/js/jquery.shapeshift.js"></script>
     <script src="../static/js/d3.min.js"></script>
     <script src="../static/js/jquery.mobile.min.js"></script>
     <script src="../static/js/slider.js"></script>
 	  <script src="../static/js/toggle.js"></script>
+    <script src="../static/js/pulldown.js"></script>
+    <script src="../static/js/pushbutton.js"></script>
+    <script src="../static/js/numerical_reporter.js"></script>
+    <script src="../static/js/div_render.js"></script>
 	  <script src="../static/js/locktoggle.js"></script>
 	  <script src="../static/js/timeplot.js"></script>
+    <script src="../static/js/time_series.js"></script>
     <script src="../static/js/parallel.js"></script>
+    <script src="../static/js/virtualjoystick.js"></script>
     <script src="../static/js/main.js"></script>
+
 
     <!-- Page Tab Icon -->
     <link rel="icon" href="../static/favicon-angellist.ico">
@@ -70,8 +79,16 @@
 
 
 		<!-- where the magic happens :) -->
-		<div id="main_area" style="margin:auto;"></div>
+		<div id="main_area" style="margin:auto;height:500px">
+
+    </div>
 
 	</div>
+
+  <script>
+    $(document).ready(function() {
+      $(".container").shapeshift();
+    })
+  </script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 function Parallel_Plot(div_id,name,num_values,labels,plot_width,plot_height,max_val,min_val,color,unique,type){
-  console.log("making a " + type + " graph with id=" + unique + "!");
+  console.log("making a " + type + " graph with id=" + div_id + "!");
   console.log("graph has " + num_values + " number of values!");
   console.log("graph will be " + color);
 
@@ -181,7 +181,7 @@ function Parallel_Plot(div_id,name,num_values,labels,plot_width,plot_height,max_
 
       }
       var element = d3.select(".x.axis").node();
-      var bottom_padding = element.getBoundingClientRect().height;
+      var bottom_padding = 20;
 
   this.step_p = function(values){
     var newData = [];
