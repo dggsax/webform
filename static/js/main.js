@@ -281,7 +281,8 @@ $(document).on('pageinit', function() {
 
     $(document).keypress(function(event){
       if(String.fromCharCode(event.which) == "u"){
-        
+        console.log("u pressed");
+        keypressLockToggle(69);
       }
     });
 

@@ -33,3 +33,18 @@ function lockToggle(div_id,title,names,unique,socket=null){
         });
     };
 }
+
+// Same thing as socket listener, but for the keypress on u
+// Same thing as socket listener, but for the keypress on u
+function keypressLockToggle(unique){
+    var lockToggle = '#lock' + unique + 'toggle';
+    if ($(lockToggle).val() == "Locked"){
+        $(lockToggle).val('Unlocked').slider('refresh');
+        $("#drag_container").trigger("ss-destroy");
+        console.log("all draggable things should be disabled");
+    } else if ($(lockToggle).val() == "Unlocked"){
+        $(lockToggle).val('Locked').slider('refresh');
+        $("#drag_container").shapeshift();
+        console.log("all draggable things should be enabled");
+    }
+};
