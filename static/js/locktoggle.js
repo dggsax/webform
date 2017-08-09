@@ -15,7 +15,7 @@ function lockToggle(div_id,title,names,unique,socket=null){
         built = true;
 
         $("#"+div_id+unique+"_holder").trigger("create");
-        console.log("just enjanced");
+        console.log("just enhanced");
         console.log("#"+div_id+unique+"toggle");
     }
     setup();

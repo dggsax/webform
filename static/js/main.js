@@ -4,6 +4,13 @@ var HEADROOM_PRESENT = false;
 
 var ALREADY_BUILT = false;
 var TOGGLE_PARAM = '';
+var div_renders = [];
+var toggles = [];
+var pulldowns = [];
+var pushbuttons = [];
+var n_reporters = [];
+
+var socket = io('http://localhost:3000');
 
 /////////////////////
 //                 //
@@ -89,6 +96,12 @@ $(document).on('pageinit', function() {
           $.each(plots, function(index, value){
             plot_count += 1;
           });
+          //step numerical reports
+          for (var i=0; i<n_reporters.length;i++){
+            n_reporters[i].step([mouseX]);
+          }
+
+          //step plots
           for (var i=0; i<plot_count;i++){
               var name = plots[i]['name'];
               switch(plot_handlers[name].constructor.name){
@@ -230,6 +243,11 @@ $(document).on('pageinit', function() {
         }
         build_plots();
         build_sliders();
+        build_div_renders("derp","Div Render",200,20,"asda",socket);
+        build_toggles("pos_1","Toggle",["Red","Blue"],"derp1211",socket);
+        build_pulldowns("pos_2","Favorite Food",["deer","lamb","kale"], "dwer2",socket);
+        build_pushbuttons("pos_3","Pushbutton","Red","Black","derp1231451",socket);
+        build_numerical_reporters("pos_1","X Position",[-100,500],"red","black", "defunique");
         //makes sure that scaler buttons aren't renamed
         $('*[class^="scaler"]').attr('class','scaler');
 
@@ -249,7 +267,8 @@ $(document).on('pageinit', function() {
         console.log("lock status changed");
         var unique = 696969;
         var val = $(this).children().children().eq(1).val();
-        socket.emit('toggle_update_'+unique,val)
+        console.log(val);
+        socket.emit('toggle_update_'+unique,val);
     });
 
 
@@ -258,6 +277,12 @@ $(document).on('pageinit', function() {
         console.log(message);
         console.log($(this).attr('id'),$(this).val());
         socket.emit(message,{id: $(this).attr('id'), val:$(this).val()});
+    });
+
+    $(document).keypress(function(event){
+      if(String.fromCharCode(event.which) == "u"){
+        
+      }
     });
 
     /////////////////////////////
@@ -319,5 +344,36 @@ $(document).on('pageinit', function() {
         parent.update();
     });
 
+function build_div_renders(div_id,title,width,height,unique, socket=null){
+  d3.select("#drag_container").append("div").attr("id",div_id);
+  var plot = new Div_Render(div_id,title,width,height,unique,socket);
+  div_renders.push(plot);
+}
+
+
+function build_toggles(div_id,title,names,unique, socket=null){
+  d3.select("#drag_container").append("div").attr("id",div_id);
+  var toggle = new Toggle(div_id,title,names,unique,socket);
+  toggles.push(toggle);
+}
+
+//need to fix labeling for this one
+function build_pulldowns(div_id,title,names,unique,socket=null){
+  d3.select("#drag_container").append("div").attr("id",div_id);
+  var p_down = new Pulldown(div_id,title,names,unique,socket);
+  pulldowns.push(p_down);
+}
+
+function build_pushbuttons(div_id,label,color,bg_color,unique,socket=null){
+  d3.select("#drag_container").append("div").attr("id",div_id);
+  var p_button = new PushButton(div_id,label,color,bg_color,unique,socket);
+  pushbuttons.push(p_button);
+}
+
+function build_numerical_reporters(div_id,title,range,color,bg_color,unique,precision=null,socket=null){
+  d3.select("#drag_container").append("div").attr("id",div_id);
+  var reporter = new Numerical_Reporter(div_id,title,range,color,bg_color,unique,precision,socket);
+  n_reporters.push(reporter);
+}
 
 });
