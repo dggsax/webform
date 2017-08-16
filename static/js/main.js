@@ -9,6 +9,7 @@ var toggles = [];
 var pulldowns = [];
 var pushbuttons = [];
 var n_reporters = [];
+var joysticks = [];
 
 var socket = io('http://localhost:3000');
 
@@ -248,6 +249,8 @@ $(document).on('pageinit', function() {
         build_pulldowns("pos_2","Favorite Food",["deer","lamb","kale"], "dwer2",socket);
         build_pushbuttons("pos_3","Pushbutton","Red","Black","derp1231451",socket);
         build_numerical_reporters("pos_1","X Position",[-100,500],"red","black", "defunique");
+        build_joystick("js1","Joystick","static","white","red");
+        // build_joystick("js2","Joystick 2","static","white","red");
         //makes sure that scaler buttons aren't renamed
         $('*[class^="scaler"]').attr('class','scaler');
 
@@ -366,7 +369,7 @@ function build_pulldowns(div_id,title,names,unique,socket=null){
 }
 
 function build_pushbuttons(div_id,label,color,bg_color,unique,socket=null){
-  d3.select("#drag_container").append("div").attr("id",div_id);
+  d3.select("#drag_container").append("div").attr("id",div_id).html(label);
   var p_button = new PushButton(div_id,label,color,bg_color,unique,socket);
   pushbuttons.push(p_button);
 }
@@ -376,5 +379,20 @@ function build_numerical_reporters(div_id,title,range,color,bg_color,unique,prec
   var reporter = new Numerical_Reporter(div_id,title,range,color,bg_color,unique,precision,socket);
   n_reporters.push(reporter);
 }
+
+function build_joystick(div_id,title,mode,background,color){
+  var outer = d3.select("#main_area").append("div").attr("id",div_id+"outer");
+  outer.append("div").attr("id",div_id+"_title").html(title);
+  outer.append("div").attr("class","joystick").attr("id",div_id);
+  var new_joystick = nipplejs.create({
+      zone: document.getElementById(div_id),
+      mode: mode,
+      position: { left: '50%', top: '50%' },
+      color: color,
+      size: 200
+      });
+  joysticks.push(new_joystick);
+    }
+
 
 });

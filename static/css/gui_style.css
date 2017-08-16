@@ -176,3 +176,11 @@
   background: transparent;
   border: 1px dashed blue;
 }
+
+.joystick{
+  position: absolute;
+  height: 300px;
+  width: 300px;
+  background: rgba(0, 255, 0, 0.1);
+  /*border:dotted;*/
+}
